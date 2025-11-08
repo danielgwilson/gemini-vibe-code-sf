@@ -17,6 +17,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow public auth pages
+  if (['/login', '/register'].includes(pathname)) {
+    const token = await getToken({
+      req: request,
+      secret: process.env.NEXTAUTH_SECRET,
+      secureCookie: !isDevelopmentEnvironment,
+    });
+
+    // If already logged in, redirect to home
+    if (token) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    // Allow access to login/register pages
+    return NextResponse.next();
+  }
+
+  // For all other routes, require authentication
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
@@ -28,10 +46,6 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(
       new URL(`/login?callbackUrl=${redirectUrl}`, request.url)
     );
-  }
-
-  if (token && ['/login', '/register'].includes(pathname)) {
-    return NextResponse.redirect(new URL('/', request.url));
   }
 
   return NextResponse.next();
