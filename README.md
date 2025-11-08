@@ -1,36 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Gemini Vibe: The AI-Powered Podcast Platform
 
-## Getting Started
+## Project Vision
 
-First, run the development server:
+**Gemini Vibe** is a next-generation podcasting platform designed to automate and enhance the entire content creation lifecycle. Our goal is to leverage the power of Google's Gemini AI and Google Cloud services to make podcasting faster, easier, and more creative.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+This project will handle everything from idea generation and recording via Google Meet to post-production with a signature AI-powered **"Vibe Editing"** feature.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Core Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+-   **Seamless Google Meet Integration:** Record podcasts directly from Google Meet, with automated transcription and speaker identification.
+-   **AI-Powered Content Generation:** Use Gemini to generate podcast ideas, create interview question sheets, and write entire scripts.
+-   **"Vibe Editing" Engine:** Our killer feature. Automatically rewrite and style podcast transcripts to match a desired tone or "vibe" (e.g., "Casual Banter," "Professional News Report," "Humorous Tech Chat").
+-   **Automated Post-Production:** Generate show notes, summaries, and social media content from your recording.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Current Status
 
-## Learn More
+This project is under active development. We are currently in the research and architectural planning phase. See [MASTER_PLAN.md](MASTER_PLAN.md) for the detailed development roadmap.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).*
