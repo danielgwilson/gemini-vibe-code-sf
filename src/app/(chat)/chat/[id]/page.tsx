@@ -1,9 +1,8 @@
 import { cookies } from "next/headers";
 import { notFound, redirect } from "next/navigation";
-import { Suspense } from "react";
 
 import { auth } from "@/app/(auth)/auth";
-import { Chat } from "@/components/chat";
+import { ChatWrapper } from "@/components/chat-wrapper";
 import { DataStreamHandler } from "@/components/data-stream-handler";
 import { DEFAULT_CHAT_MODEL } from "@/lib/ai/models";
 import { getChatById, getMessagesByChatId } from "@/lib/db/queries";
@@ -46,17 +45,15 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
   if (!chatModelFromCookie) {
     return (
       <>
-        <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading...</div>}>
-          <Chat
-            autoResume={true}
-            id={chat.id}
-            initialChatModel={DEFAULT_CHAT_MODEL}
-            initialLastContext={chat.lastContext ?? undefined}
-            initialMessages={uiMessages}
-            initialVisibilityType={chat.visibility}
-            isReadonly={session?.user?.id !== chat.userId}
-          />
-        </Suspense>
+        <ChatWrapper
+          autoResume={true}
+          id={chat.id}
+          initialChatModel={DEFAULT_CHAT_MODEL}
+          initialLastContext={chat.lastContext ?? undefined}
+          initialMessages={uiMessages}
+          initialVisibilityType={chat.visibility}
+          isReadonly={session?.user?.id !== chat.userId}
+        />
         <DataStreamHandler />
       </>
     );
@@ -64,17 +61,15 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
 
   return (
     <>
-      <Suspense fallback={<div className="flex h-screen items-center justify-center">Loading...</div>}>
-        <Chat
-          autoResume={true}
-          id={chat.id}
-          initialChatModel={chatModelFromCookie.value}
-          initialLastContext={chat.lastContext ?? undefined}
-          initialMessages={uiMessages}
-          initialVisibilityType={chat.visibility}
-          isReadonly={session?.user?.id !== chat.userId}
-        />
-      </Suspense>
+      <ChatWrapper
+        autoResume={true}
+        id={chat.id}
+        initialChatModel={chatModelFromCookie.value}
+        initialLastContext={chat.lastContext ?? undefined}
+        initialMessages={uiMessages}
+        initialVisibilityType={chat.visibility}
+        isReadonly={session?.user?.id !== chat.userId}
+      />
       <DataStreamHandler />
     </>
   );
