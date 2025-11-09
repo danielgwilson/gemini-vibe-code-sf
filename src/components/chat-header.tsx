@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { memo } from "react";
 import { useWindowSize } from "usehooks-ts";
 import { SidebarToggle } from "@/components/sidebar-toggle";
+import { AgentBadge } from "@/components/agent-avatar";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "./icons";
 import { useSidebar } from "./ui/sidebar";
@@ -13,10 +14,12 @@ function PureChatHeader({
   chatId,
   selectedVisibilityType,
   isReadonly,
+  selectedAgentId,
 }: {
   chatId: string;
   selectedVisibilityType: VisibilityType;
   isReadonly: boolean;
+  selectedAgentId?: string;
 }) {
   const router = useRouter();
   const { open } = useSidebar();
@@ -24,8 +27,14 @@ function PureChatHeader({
   const { width: windowWidth } = useWindowSize();
 
   return (
-    <header className="sticky top-0 flex items-center gap-2 bg-background px-2 py-1.5 md:px-2">
+    <header className="sticky top-0 z-10 flex items-center gap-2 bg-background/80 backdrop-blur-xl border-b border-border/50 px-2 py-1.5 md:px-2">
       <SidebarToggle />
+
+      {selectedAgentId && (
+        <div className="order-0 hidden md:flex">
+          <AgentBadge agentId={selectedAgentId} showRole />
+        </div>
+      )}
 
       {(!open || windowWidth < 768) && (
         <Button
@@ -56,6 +65,7 @@ export const ChatHeader = memo(PureChatHeader, (prevProps, nextProps) => {
   return (
     prevProps.chatId === nextProps.chatId &&
     prevProps.selectedVisibilityType === nextProps.selectedVisibilityType &&
-    prevProps.isReadonly === nextProps.isReadonly
+    prevProps.isReadonly === nextProps.isReadonly &&
+    prevProps.selectedAgentId === nextProps.selectedAgentId
   );
 });

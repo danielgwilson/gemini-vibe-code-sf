@@ -10,6 +10,7 @@ import { ChatHeader } from "@/components/chat-header";
 import { useArtifactSelector } from "@/hooks/use-artifact";
 import { useAutoResume } from "@/hooks/use-auto-resume";
 import { useChatVisibility } from "@/hooks/use-chat-visibility";
+import { DEFAULT_AGENT_ID } from "@/lib/ai/agents";
 import type { Vote } from "@/lib/db/schema";
 import { ChatSDKError } from "@/lib/errors";
 import type { Attachment, ChatMessage } from "@/lib/types";
@@ -51,11 +52,17 @@ export function Chat({
   const [input, setInput] = useState<string>("");
   const [usage, setUsage] = useState<AppUsage | undefined>(initialLastContext);
   const [currentModelId, setCurrentModelId] = useState(initialChatModel);
+  const [currentAgentId, setCurrentAgentId] = useState<string | undefined>(DEFAULT_AGENT_ID);
   const currentModelIdRef = useRef(currentModelId);
+  const currentAgentIdRef = useRef(currentAgentId);
 
   useEffect(() => {
     currentModelIdRef.current = currentModelId;
   }, [currentModelId]);
+
+  useEffect(() => {
+    currentAgentIdRef.current = currentAgentId;
+  }, [currentAgentId]);
 
   const {
     messages,
@@ -80,6 +87,7 @@ export function Chat({
             message: request.messages.at(-1),
             selectedChatModel: currentModelIdRef.current,
             selectedVisibilityType: visibilityType,
+            selectedAgentId: currentAgentIdRef.current,
             ...request.body,
           },
         };
@@ -138,10 +146,11 @@ export function Chat({
 
   return (
     <>
-      <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-background">
+      <div className="overscroll-behavior-contain flex h-dvh min-w-0 touch-pan-y flex-col bg-gradient-to-br from-background via-background to-muted/20">
         <ChatHeader
           chatId={id}
           isReadonly={isReadonly}
+          selectedAgentId={currentAgentId}
           selectedVisibilityType={initialVisibilityType}
         />
 
@@ -151,13 +160,14 @@ export function Chat({
           isReadonly={isReadonly}
           messages={messages}
           regenerate={regenerate}
-          selectedModelId={initialChatModel}
+          selectedModelId={currentModelId}
+          selectedAgentId={currentAgentId}
           setMessages={setMessages}
           status={status}
           votes={votes}
         />
 
-        <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background px-2 pb-3 md:px-4 md:pb-4">
+        <div className="sticky bottom-0 z-1 mx-auto flex w-full max-w-4xl gap-2 border-t-0 bg-background/80 backdrop-blur-xl px-2 pb-3 md:px-4 md:pb-4">
           {!isReadonly && (
             <MultimodalInput
               attachments={attachments}
@@ -165,7 +175,9 @@ export function Chat({
               input={input}
               messages={messages}
               onModelChange={setCurrentModelId}
+              onAgentChange={setCurrentAgentId}
               selectedModelId={currentModelId}
+              selectedAgentId={currentAgentId}
               selectedVisibilityType={visibilityType}
               sendMessage={sendMessage}
               setAttachments={setAttachments}

@@ -19,6 +19,7 @@ import {
   ToolOutput,
 } from "./elements/tool";
 import { SparklesIcon } from "./icons";
+import { AgentAvatar } from "./agent-avatar";
 import { MessageActions } from "./message-actions";
 import { MessageEditor } from "./message-editor";
 import { MessageReasoning } from "./message-reasoning";
@@ -35,6 +36,7 @@ const PurePreviewMessage = ({
   regenerate,
   isReadonly,
   requiresScrollPadding,
+  selectedAgentId,
 }: {
   chatId: string;
   message: ChatMessage;
@@ -44,6 +46,7 @@ const PurePreviewMessage = ({
   regenerate: UseChatHelpers<ChatMessage>["regenerate"];
   isReadonly: boolean;
   requiresScrollPadding: boolean;
+  selectedAgentId?: string;
 }) => {
   const [mode, setMode] = useState<"view" | "edit">("view");
 
@@ -68,9 +71,7 @@ const PurePreviewMessage = ({
         })}
       >
         {message.role === "assistant" && (
-          <div className="-mt-1 flex size-8 shrink-0 items-center justify-center rounded-full bg-background ring-1 ring-border">
-            <SparklesIcon size={14} />
-          </div>
+          <AgentAvatar agentId={selectedAgentId} size="md" className="-mt-1" />
         )}
 
         <div
@@ -129,7 +130,7 @@ const PurePreviewMessage = ({
                       className={cn({
                         "w-fit break-words rounded-2xl px-3 py-2 text-right text-white":
                           message.role === "user",
-                        "bg-transparent px-0 py-0 text-left":
+                        "bg-background/60 backdrop-blur-sm border border-border/50 rounded-xl px-4 py-3 text-left":
                           message.role === "assistant",
                       })}
                       data-testid="message-content"

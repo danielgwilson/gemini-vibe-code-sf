@@ -20,6 +20,7 @@ import { toast } from "sonner";
 import { useLocalStorage, useWindowSize } from "usehooks-ts";
 import { saveChatModelAsCookie } from "@/app/api/chat/actions";
 import { SelectItem } from "@/components/ui/select";
+import { agents, DEFAULT_AGENT_ID, getAgentById } from "@/lib/ai/agents";
 import { chatModels } from "@/lib/ai/models";
 import { myProvider } from "@/lib/ai/providers";
 import type { Attachment, ChatMessage } from "@/lib/types";
@@ -61,7 +62,9 @@ function PureMultimodalInput({
   className,
   selectedVisibilityType,
   selectedModelId,
+  selectedAgentId,
   onModelChange,
+  onAgentChange,
   usage,
 }: {
   chatId: string;
@@ -77,7 +80,9 @@ function PureMultimodalInput({
   className?: string;
   selectedVisibilityType: VisibilityType;
   selectedModelId: string;
+  selectedAgentId?: string;
   onModelChange?: (modelId: string) => void;
+  onAgentChange?: (agentId: string | undefined) => void;
   usage?: AppUsage;
 }) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -308,7 +313,7 @@ function PureMultimodalInput({
       />
 
       <PromptInput
-        className="rounded-xl border border-border bg-background p-3 shadow-xs transition-all duration-200 focus-within:border-border hover:border-muted-foreground/50"
+        className="rounded-xl border border-border/50 bg-background/80 backdrop-blur-xl p-3 shadow-lg shadow-black/5 transition-all duration-200 focus-within:border-border focus-within:bg-background/90 hover:border-muted-foreground/50 dark:bg-background/60 dark:shadow-black/20 dark:focus-within:bg-background/80"
         onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
           if (status !== "ready") {
@@ -376,7 +381,9 @@ function PureMultimodalInput({
             />
             <ModelSelectorCompact
               onModelChange={onModelChange}
+              onAgentChange={onAgentChange}
               selectedModelId={selectedModelId}
+              selectedAgentId={selectedAgentId}
             />
           </PromptInputTools>
 
@@ -416,6 +423,9 @@ export const MultimodalInput = memo(
     if (prevProps.selectedModelId !== nextProps.selectedModelId) {
       return false;
     }
+    if (prevProps.selectedAgentId !== nextProps.selectedAgentId) {
+      return false;
+    }
 
     return true;
   },
@@ -452,51 +462,84 @@ const AttachmentsButton = memo(PureAttachmentsButton);
 
 function PureModelSelectorCompact({
   selectedModelId,
+  selectedAgentId,
   onModelChange,
+  onAgentChange,
 }: {
   selectedModelId: string;
+  selectedAgentId?: string;
   onModelChange?: (modelId: string) => void;
+  onAgentChange?: (agentId: string | undefined) => void;
 }) {
-  const [optimisticModelId, setOptimisticModelId] = useState(selectedModelId);
+  const [optimisticAgentId, setOptimisticAgentId] = useState(() => {
+    // Use selectedAgentId if provided, otherwise default to first agent
+    return selectedAgentId || DEFAULT_AGENT_ID;
+  });
 
   useEffect(() => {
-    setOptimisticModelId(selectedModelId);
-  }, [selectedModelId]);
+    // Always default to first agent if no agent is explicitly selected
+    setOptimisticAgentId(selectedAgentId || DEFAULT_AGENT_ID);
+  }, [selectedAgentId]);
 
-  const selectedModel = chatModels.find(
-    (model) => model.id === optimisticModelId,
-  );
+  const selectedAgent = getAgentById(optimisticAgentId) || agents[0];
 
   return (
     <PromptInputModelSelect
-      onValueChange={(modelName: string) => {
-        const model = chatModels.find((m) => m.name === modelName);
-        if (model) {
-          setOptimisticModelId(model.id);
-          onModelChange?.(model.id);
+      onValueChange={(agentName: string) => {
+        const agent = agents.find((a) => a.name === agentName);
+        if (agent) {
+          setOptimisticAgentId(agent.id);
+          onModelChange?.(agent.modelId);
+          onAgentChange?.(agent.id);
           startTransition(() => {
-            saveChatModelAsCookie(model.id);
+            saveChatModelAsCookie(agent.modelId);
           });
         }
       }}
-      value={selectedModel?.name}
+      value={selectedAgent?.name}
     >
       <Trigger asChild>
-        <Button variant="ghost" className="h-8 px-2">
-          <CpuIcon size={16} />
+        <Button variant="ghost" className="h-8 px-2 gap-1.5">
+          {selectedAgent?.imageUrl ? (
+            <img
+              src={selectedAgent.imageUrl}
+              alt={selectedAgent.name}
+              className="size-5 rounded-full object-cover"
+            />
+          ) : (
+            <span className="text-base">{selectedAgent?.icon}</span>
+          )}
           <span className="hidden font-medium text-xs sm:block">
-            {selectedModel?.name}
+            {selectedAgent?.name}
           </span>
           <ChevronDownIcon size={16} />
         </Button>
       </Trigger>
-      <PromptInputModelSelectContent className="min-w-[260px] p-0">
+      <PromptInputModelSelectContent className="min-w-[280px] p-0">
         <div className="flex flex-col gap-px">
-          {chatModels.map((model) => (
-            <SelectItem key={model.id} value={model.name}>
-              <div className="truncate font-medium text-xs">{model.name}</div>
-              <div className="mt-px truncate text-[10px] text-muted-foreground leading-tight">
-                {model.description}
+          {agents.map((agent) => (
+            <SelectItem key={agent.id} value={agent.name}>
+              <div className="flex items-center gap-2">
+                {agent.imageUrl ? (
+                  <img
+                    src={agent.imageUrl}
+                    alt={agent.name}
+                    className="size-8 rounded-full object-cover"
+                  />
+                ) : (
+                  <span className="text-lg">{agent.icon}</span>
+                )}
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2">
+                    <div className="truncate font-medium text-xs">{agent.name}</div>
+                    <span className="text-[10px] text-muted-foreground px-1.5 py-0.5 rounded bg-muted">
+                      {agent.role}
+                    </span>
+                  </div>
+                  <div className="mt-px truncate text-[10px] text-muted-foreground leading-tight">
+                    {agent.description}
+                  </div>
+                </div>
               </div>
             </SelectItem>
           ))}
