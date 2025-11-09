@@ -540,59 +540,72 @@ function PureModelSelectorCompact({
           <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
             Agents
           </div>
-          {agents.map((agent) => (
-            <SelectItem
-              key={agent.id}
-              value={agent.name}
-              className="rounded-lg p-3 cursor-pointer hover:bg-accent/50 transition-all pl-8"
-              style={{
-                background:
-                  optimisticModelId === agent.id
-                    ? `linear-gradient(135deg, ${agent.color}15 0%, ${agent.color}05 100%)`
-                    : 'transparent',
-              }}
-            >
-              <div className="flex items-start gap-3">
-                <div
-                  className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xl backdrop-blur-sm border-2 -ml-1"
-                  style={{
-                    background: agent.gradient,
-                    borderColor: `${agent.color}40`,
-                  }}
-                >
-                  {agent.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-2">
-                    <div className="truncate font-semibold text-sm">
-                      {agent.name}
+          {agents.map((agent) => {
+            const isSelected = optimisticModelId === agent.id;
+            return (
+              <SelectItem
+                key={agent.id}
+                value={agent.name}
+                className={cn(
+                  "rounded-lg p-3 cursor-pointer hover:bg-accent/50 transition-all pl-8",
+                  isSelected && "text-foreground [&>span>svg]:!text-foreground"
+                )}
+                style={{
+                  background:
+                    isSelected
+                      ? `linear-gradient(135deg, ${agent.color}15 0%, ${agent.color}05 100%)`
+                      : 'transparent',
+                  ...(isSelected && {
+                    '--agent-checkmark-color': agent.color,
+                  } as React.CSSProperties),
+                }}
+                data-agent-selected={isSelected}
+              >
+                <div className="flex items-start gap-3">
+                  <div
+                    className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xl backdrop-blur-sm border-2 -ml-1"
+                    style={{
+                      background: agent.gradient,
+                      borderColor: `${agent.color}40`,
+                    }}
+                  >
+                    {agent.icon}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2">
+                      <div className={cn(
+                        "truncate font-semibold text-sm",
+                        isSelected ? "text-foreground" : ""
+                      )}>
+                        {agent.name}
+                      </div>
+                      <div
+                        className="w-2 h-2 rounded-full"
+                        style={{ background: agent.color }}
+                      />
                     </div>
-                    <div
-                      className="w-2 h-2 rounded-full"
-                      style={{ background: agent.color }}
-                    />
-                  </div>
-                  <div className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                    {agent.description}
-                  </div>
-                  <div className="mt-1.5 flex flex-wrap gap-1">
-                    {agent.capabilities.slice(0, 2).map((capability) => (
-                      <span
-                        key={capability}
-                        className="text-[10px] px-1.5 py-0.5 rounded-md backdrop-blur-sm"
-                        style={{
-                          background: `${agent.color}15`,
-                          color: agent.color,
-                        }}
-                      >
-                        {capability}
-                      </span>
-                    ))}
+                    <div className="mt-1 text-xs text-muted-foreground leading-relaxed">
+                      {agent.description}
+                    </div>
+                    <div className="mt-1.5 flex flex-wrap gap-1">
+                      {agent.capabilities.slice(0, 2).map((capability) => (
+                        <span
+                          key={capability}
+                          className="text-[10px] px-1.5 py-0.5 rounded-md backdrop-blur-sm font-medium"
+                          style={{
+                            background: `${agent.color}25`,
+                            color: agent.color,
+                          }}
+                        >
+                          {capability}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </SelectItem>
-          ))}
+              </SelectItem>
+            );
+          })}
           <div className="px-2 py-1.5 mt-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider border-t border-border/50">
             Models
           </div>
