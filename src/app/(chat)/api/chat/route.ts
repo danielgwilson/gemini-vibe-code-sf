@@ -23,7 +23,12 @@ import type { ChatModel } from '@/lib/ai/models';
 import { type RequestHints, systemPrompt } from '@/lib/ai/prompts';
 import { myProvider } from '@/lib/ai/providers';
 import { createDocument } from '@/lib/ai/tools/create-document';
+import { firecrawlSearch } from '@/lib/ai/tools/firecrawl-search';
+import { gmail } from '@/lib/ai/tools/gmail';
 import { getWeather } from '@/lib/ai/tools/get-weather';
+import { googleCalendar } from '@/lib/ai/tools/google-calendar';
+import { googleDriveWrite } from '@/lib/ai/tools/google-drive-write';
+import { googleMeetCreate } from '@/lib/ai/tools/google-meet-create';
 import { readGoogleMeetRecording } from '@/lib/ai/tools/read-google-meet-recording';
 import { requestSuggestions } from '@/lib/ai/tools/request-suggestions';
 import { updateDocument } from '@/lib/ai/tools/update-document';
@@ -207,6 +212,11 @@ export async function POST(request: Request) {
                   'updateDocument',
                   'requestSuggestions',
                   'readGoogleMeetRecording',
+                  'googleCalendar',
+                  'googleDriveWrite',
+                  'googleMeetCreate',
+                  'gmail',
+                  'firecrawlSearch',
                 ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
@@ -218,6 +228,11 @@ export async function POST(request: Request) {
               dataStream,
             }),
             readGoogleMeetRecording: readGoogleMeetRecording({ session }),
+            googleCalendar: googleCalendar({ session }),
+            googleDriveWrite: googleDriveWrite({ session }),
+            googleMeetCreate: googleMeetCreate({ session }),
+            gmail: gmail({ session }),
+            firecrawlSearch: firecrawlSearch({}),
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,

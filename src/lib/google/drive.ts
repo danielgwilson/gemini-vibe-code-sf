@@ -139,3 +139,123 @@ export async function getRecordingDetails(
   }
 }
 
+/**
+ * Find or create a folder in Google Drive
+ */
+export async function findOrCreateFolder(
+  drive: ReturnType<typeof getDriveClient>,
+  folderName: string,
+  parentFolderId?: string,
+) {
+  try {
+    // First, try to find the folder
+    let query = `name='${folderName}' and mimeType='application/vnd.google-apps.folder' and trashed=false`;
+    if (parentFolderId) {
+      query += ` and '${parentFolderId}' in parents`;
+    } else {
+      query += " and 'root' in parents";
+    }
+
+    const response = await drive.files.list({
+      q: query,
+      fields: 'files(id, name)',
+      spaces: 'drive',
+    });
+
+    if (response.data.files && response.data.files.length > 0) {
+      return response.data.files[0];
+    }
+
+    // Folder doesn't exist, create it
+    const createResponse = await drive.files.create({
+      requestBody: {
+        name: folderName,
+        mimeType: 'application/vnd.google-apps.folder',
+        parents: parentFolderId ? [parentFolderId] : undefined,
+      },
+      fields: 'id, name',
+    });
+
+    return createResponse.data;
+  } catch (error) {
+    console.error('Error finding or creating folder:', error);
+    throw error;
+  }
+}
+
+/**
+ * Create a Google Doc in Drive
+ * Note: To add content, you'll need to use the Google Docs API separately
+ */
+export async function createGoogleDoc(
+  drive: ReturnType<typeof getDriveClient>,
+  doc: {
+    title: string;
+    content: string;
+    parentFolderId?: string;
+  },
+) {
+  try {
+    // Create the document
+    const createResponse = await drive.files.create({
+      requestBody: {
+        name: doc.title,
+        mimeType: 'application/vnd.google-apps.document',
+        parents: doc.parentFolderId ? [doc.parentFolderId] : undefined,
+      },
+      fields: 'id, name, webViewLink',
+    });
+
+    const fileId = createResponse.data.id;
+
+    // For now, we'll create it empty. Content can be added via Google Docs API if needed.
+    // The content parameter is kept for future implementation with Docs API.
+
+    return {
+      id: createResponse.data.id!,
+      name: createResponse.data.name!,
+      webViewLink: createResponse.data.webViewLink!,
+    };
+  } catch (error) {
+    console.error('Error creating Google Doc:', error);
+    throw error;
+  }
+}
+
+/**
+ * Create a text file in Drive
+ */
+export async function createTextFile(
+  drive: ReturnType<typeof getDriveClient>,
+  file: {
+    name: string;
+    content: string;
+    parentFolderId?: string;
+    mimeType?: string;
+  },
+) {
+  try {
+    const response = await drive.files.create({
+      requestBody: {
+        name: file.name,
+        mimeType: file.mimeType || 'text/plain',
+        parents: file.parentFolderId ? [file.parentFolderId] : undefined,
+      },
+      media: {
+        mimeType: file.mimeType || 'text/plain',
+        body: file.content,
+      },
+      fields: 'id, name, webViewLink',
+    });
+
+    return {
+      id: response.data.id,
+      name: response.data.name,
+      webViewLink: response.data.webViewLink,
+    };
+  } catch (error) {
+    console.error('Error creating text file:', error);
+    throw error;
+  }
+}
+
