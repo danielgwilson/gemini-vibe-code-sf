@@ -20,64 +20,43 @@ const getAgentSuggestions = (agentId: string): string[] => {
   const agent = getAgentById(agentId);
   
   if (!agent) {
-    // Fallback for legacy models
+    // Fallback for legacy models - use default podcast-focused suggestions
     return [
-      "What are the advantages of using Next.js?",
-      "Write code to demonstrate Dijkstra's algorithm",
-      "Help me write an essay about Silicon Valley",
-      "What is the weather in San Francisco?",
+      "Generate podcast ideas from themes for different timelines",
+      "Research competitors for my podcast idea using Firecrawl",
+      "Organize my podcast episodes in Google Calendar",
+      "Help me brainstorm podcast ideas focused on my niche and brand",
     ];
   }
 
   switch (agent.id) {
     case "ida":
       return [
-        "Help me brainstorm podcast episode ideas",
-        "Create a content strategy for my new podcast",
-        "Develop a brand voice for my show",
-        "Generate creative themes for my podcast series",
+        "Generate podcast ideas from themes for different timelines",
+        "Recommend which episode ideas to pursue based on ROI and follower growth",
+        "Create actionable episode plans from podcast themes",
+        "Help me brainstorm podcast ideas focused on my niche and brand",
       ];
     case "astra":
       return [
-        "Research competitors in my podcast niche",
-        "Analyze market trends for my content topic",
-        "Validate if my podcast idea has potential",
-        "Provide data-driven recommendations for my show",
+        "Research competitors for my podcast idea using Firecrawl",
+        "Validate if my podcast topic is unique and relevant",
+        "Find what content topics are trending in my niche",
+        "Compare my podcast idea against competitor content",
       ];
     case "ember":
       return [
-        "Create a production schedule for my podcast",
-        "Help me plan my episode release calendar",
-        "Organize my podcast workflow and tasks",
-        "Set up a timeline for my next 3 episodes",
-      ];
-    case "nova":
-      return [
-        "Help me automate my podcast workflow",
-        "Integrate tools for my podcast production",
-        "Design a system for managing my episodes",
-        "Build automation for my content pipeline",
-      ];
-    case "zen":
-      return [
-        "Edit and refine my podcast script",
-        "Improve the clarity of my episode outline",
-        "Review my content for quality and style",
-        "Help me polish my podcast description",
-      ];
-    case "luna":
-      return [
-        "Create social media posts for my podcast",
-        "Repurpose my episode content for different platforms",
-        "Develop an engagement strategy for my audience",
-        "Analyze trends for my social media content",
+        "Organize my podcast episodes in Google Calendar",
+        "Create a production schedule with tasks for my next episode",
+        "Plan my episode calendar based on my availability",
+        "Set up episode tasks and deadlines in Google Calendar",
       ];
     default:
       return [
-        "What are the advantages of using Next.js?",
-        "Write code to demonstrate Dijkstra's algorithm",
-        "Help me write an essay about Silicon Valley",
-        "What is the weather in San Francisco?",
+        "Generate podcast ideas from themes for different timelines",
+        "Research competitors for my podcast idea using Firecrawl",
+        "Organize my podcast episodes in Google Calendar",
+        "Help me brainstorm podcast ideas focused on my niche and brand",
       ];
   }
 };

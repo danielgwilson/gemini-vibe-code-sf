@@ -2,30 +2,30 @@ export function HowItWorks() {
   const steps = [
     {
       number: "01",
-      title: "Define Your Vision",
+      title: "Generate Podcast Ideas",
       description:
-        "Chat with Ida to develop your podcast concept, target audience, and content pillars. Get your first 3 episodes mapped out.",
+        "Get podcast ideas from themes based on different timelines and frequencies. Receive recommendations based on follower growth, retention, niche focus, and ROI.",
       gradient: "from-chart-2 to-chart-5",
     },
     {
       number: "02",
-      title: "Stay On Track",
+      title: "Research & Validate",
       description:
-        "Astra integrates with your Google Suite to schedule recording sessions, manage assets, and keep you accountable to your goals.",
+        "Use Firecrawl to research competitors and validate your podcast topics. Identify what's relevant, unique, and needs more specificity in the market.",
       gradient: "from-chart-4 to-primary",
     },
     {
       number: "03",
-      title: "Create & Polish",
+      title: "Organize in Google Calendar",
       description:
-        "Ember helps you plan engaging content and edit your episodes to perfection. From outline to published, she's got you covered.",
+        "Organize your podcast episodes and tasks in Google Calendar. Execute plans for each episode with specific tasks, scheduled based on your availability.",
       gradient: "from-accent to-chart-1",
     },
     {
       number: "04",
       title: "Launch & Grow",
       description:
-        "Publish consistently with your AI team supporting you every step. Come back to any agent anytime you need help.",
+        "Publish consistently with your AI team supporting you every step. Come back anytime you need help with ideas, research, or scheduling.",
       gradient: "from-primary to-chart-3",
     },
   ]
