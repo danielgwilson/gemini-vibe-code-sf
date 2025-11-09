@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { Sparkles, Mic } from "lucide-react"
+import { Mic, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export function Hero() {
   return (
@@ -8,7 +8,9 @@ export function Hero() {
         <div className="text-center space-y-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-primary/20 shadow-lg shadow-primary/5">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold text-gradient-gemini">AI-Powered Podcast Creation</span>
+            <span className="text-sm font-semibold text-gradient-gemini">
+              AI-Powered Podcast Creation
+            </span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-balance leading-[1.1] tracking-tight">
@@ -18,8 +20,9 @@ export function Hero() {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance leading-relaxed font-medium">
-            Meet your three AI agents that handle everything from ideation to production. Launch your podcast with the
-            support of a full creative team.
+            Meet your three AI agents that handle everything from ideation to
+            production. Launch your podcast with the support of a full creative
+            team.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -45,5 +48,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

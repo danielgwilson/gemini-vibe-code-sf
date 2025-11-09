@@ -7,14 +7,12 @@ export const firecrawlExtract = () =>
     description:
       'Extract structured data from web pages using natural language prompts or JSON schemas. Use this to extract specific information like product details, contact info, or any structured data from web pages.',
     inputSchema: z.object({
-      urls: z
-        .array(z.string().url())
-        .describe('URLs to extract data from'),
+      urls: z.array(z.string().url()).describe('URLs to extract data from'),
       prompt: z
         .string()
         .optional()
         .describe(
-          'Natural language prompt describing what to extract (e.g., "Extract product name, price, and description")'
+          'Natural language prompt describing what to extract (e.g., "Extract product name, price, and description")',
         ),
       schema: z
         .record(z.unknown())
@@ -98,4 +96,3 @@ export const firecrawlExtract = () =>
       }
     },
   });
-

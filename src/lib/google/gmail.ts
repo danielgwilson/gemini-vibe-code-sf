@@ -6,7 +6,9 @@ import type { Session } from 'next-auth';
  */
 export function getGmailClient(session: Session) {
   if (!session.accessToken) {
-    throw new Error('No access token available in session. User may need to re-authenticate.');
+    throw new Error(
+      'No access token available in session. User may need to re-authenticate.',
+    );
   }
 
   const oauth2Client = new google.auth.OAuth2();
@@ -69,4 +71,3 @@ export async function createDraftEmail(
     throw error;
   }
 }
-

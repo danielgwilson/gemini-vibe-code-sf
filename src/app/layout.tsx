@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
-import type React from 'react';
-import { Plus_Jakarta_Sans, Geist_Mono } from 'next/font/google';
+import { Geist_Mono, Plus_Jakarta_Sans } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
+import type React from 'react';
 import { Toaster } from 'sonner';
 
 import SessionProvider from '@/components/session-provider';

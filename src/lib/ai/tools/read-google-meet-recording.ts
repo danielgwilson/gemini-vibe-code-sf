@@ -13,10 +13,12 @@ type ReadGoogleMeetRecordingProps = {
   session: Session;
 };
 
-export const readGoogleMeetRecording = ({ session }: ReadGoogleMeetRecordingProps) =>
+export const readGoogleMeetRecording = ({
+  session,
+}: ReadGoogleMeetRecordingProps) =>
   tool({
     description:
-      'Read Google Meet meeting recordings and transcripts from the user\'s Google Drive. ' +
+      "Read Google Meet meeting recordings and transcripts from the user's Google Drive. " +
       'This tool can list recent recordings, get transcript content, and retrieve recording metadata. ' +
       'Recordings are stored in the "Meet Recordings" folder in Google Drive.',
     inputSchema: z.object({
@@ -146,7 +148,10 @@ export const readGoogleMeetRecording = ({ session }: ReadGoogleMeetRecordingProp
             };
           }
 
-          if (!transcriptData.transcript || transcriptData.transcript.length === 0) {
+          if (
+            !transcriptData.transcript ||
+            transcriptData.transcript.length === 0
+          ) {
             return {
               error:
                 'TRANSCRIPT EMPTY: Transcript found but contains no content.',
@@ -273,4 +278,3 @@ export const readGoogleMeetRecording = ({ session }: ReadGoogleMeetRecordingProp
       }
     },
   });
-

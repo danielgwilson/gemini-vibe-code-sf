@@ -16,7 +16,9 @@ export const googleMeetCreate = ({ session }: GoogleMeetCreateProps) =>
         .enum(['OPEN', 'TRUSTED', 'RESTRICTED'])
         .optional()
         .default('OPEN')
-        .describe('Access type for the Meet space: OPEN (anyone with link), TRUSTED (domain users), RESTRICTED (invite only)'),
+        .describe(
+          'Access type for the Meet space: OPEN (anyone with link), TRUSTED (domain users), RESTRICTED (invite only)',
+        ),
     }),
     execute: async ({ accessType = 'OPEN' }) => {
       try {
@@ -125,4 +127,3 @@ export const googleMeetCreate = ({ session }: GoogleMeetCreateProps) =>
       }
     },
   });
-

@@ -1,16 +1,21 @@
-"use client";
+'use client';
 
-import { format } from "date-fns";
-import { ExternalLinkIcon, FileVideoIcon, FileTextIcon, CalendarIcon } from "lucide-react";
-import { Badge } from "@/components/ui/badge";
+import { format } from 'date-fns';
+import {
+  CalendarIcon,
+  ExternalLinkIcon,
+  FileTextIcon,
+  FileVideoIcon,
+} from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+} from '@/components/ui/card';
+import { cn } from '@/lib/utils';
 
 type Recording = {
   id: string;
@@ -35,7 +40,7 @@ type RecordingDetails = {
 type GoogleMeetRecordingOutput =
   | {
       success: true;
-      action: "list";
+      action: 'list';
       folderName?: string | null;
       folderId?: string | null;
       recordings: Recording[];
@@ -44,7 +49,7 @@ type GoogleMeetRecordingOutput =
     }
   | {
       success: true;
-      action: "get_transcript";
+      action: 'get_transcript';
       recordingId: string;
       transcriptId?: string | null;
       transcriptName?: string | null;
@@ -54,7 +59,7 @@ type GoogleMeetRecordingOutput =
     }
   | {
       success: true;
-      action: "get_details";
+      action: 'get_details';
       recording: RecordingDetails;
       error?: never;
     }
@@ -71,24 +76,24 @@ type GoogleMeetRecordingOutput =
     };
 
 function formatFileSize(bytes?: string): string {
-  if (!bytes) return "Unknown size";
+  if (!bytes) return 'Unknown size';
   const numBytes = parseInt(bytes, 10);
   if (isNaN(numBytes)) return bytes;
-  
-  const units = ["B", "KB", "MB", "GB"];
+
+  const units = ['B', 'KB', 'MB', 'GB'];
   let size = numBytes;
   let unitIndex = 0;
-  
+
   while (size >= 1024 && unitIndex < units.length - 1) {
     size /= 1024;
     unitIndex++;
   }
-  
+
   return `${size.toFixed(1)} ${units[unitIndex]}`;
 }
 
 function formatDate(dateString?: string): string {
-  if (!dateString) return "Unknown date";
+  if (!dateString) return 'Unknown date';
   try {
     return format(new Date(dateString), "MMM d, yyyy 'at' h:mm a");
   } catch {
@@ -106,7 +111,7 @@ export function GoogleMeetRecording({
     return null;
   }
 
-  if (output?.action === "list" && output?.success === true) {
+  if (output?.action === 'list' && output?.success === true) {
     return (
       <div className="space-y-4">
         <Card>
@@ -121,7 +126,7 @@ export function GoogleMeetRecording({
                 )}
               </div>
               <Badge variant="secondary">
-                {output.count} {output.count === 1 ? "recording" : "recordings"}
+                {output.count} {output.count === 1 ? 'recording' : 'recordings'}
               </Badge>
             </div>
           </CardHeader>
@@ -137,20 +142,23 @@ export function GoogleMeetRecording({
                   <Card
                     key={recording.id}
                     className={cn(
-                      "transition-all hover:shadow-md",
-                      recording.isTranscript && "border-blue-200 dark:border-blue-800"
+                      'transition-all hover:shadow-md',
+                      recording.isTranscript &&
+                        'border-blue-200 dark:border-blue-800',
                     )}
                   >
                     <CardContent className="pt-6">
                       <div className="flex items-start gap-3">
-                        <div className={cn(
-                          "mt-1 shrink-0 rounded p-2",
-                          recording.isVideo
-                            ? "bg-blue-100 dark:bg-blue-900/30"
-                            : recording.isTranscript
-                              ? "bg-green-100 dark:bg-green-900/30"
-                              : "bg-muted"
-                        )}>
+                        <div
+                          className={cn(
+                            'mt-1 shrink-0 rounded p-2',
+                            recording.isVideo
+                              ? 'bg-blue-100 dark:bg-blue-900/30'
+                              : recording.isTranscript
+                                ? 'bg-green-100 dark:bg-green-900/30'
+                                : 'bg-muted',
+                          )}
+                        >
                           {recording.isVideo ? (
                             <FileVideoIcon className="size-5 text-blue-600 dark:text-blue-400" />
                           ) : recording.isTranscript ? (
@@ -186,12 +194,18 @@ export function GoogleMeetRecording({
                               </div>
                             )}
                             {recording.isTranscript && (
-                              <Badge variant="secondary" className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400">
+                              <Badge
+                                variant="secondary"
+                                className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400"
+                              >
                                 Transcript
                               </Badge>
                             )}
                             {recording.isVideo && (
-                              <Badge variant="secondary" className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                              <Badge
+                                variant="secondary"
+                                className="bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400"
+                              >
                                 Video
                               </Badge>
                             )}
@@ -209,7 +223,7 @@ export function GoogleMeetRecording({
     );
   }
 
-  if (output?.action === "get_transcript" && output?.success === true) {
+  if (output?.action === 'get_transcript' && output?.success === true) {
     return (
       <Card>
         <CardHeader>
@@ -237,7 +251,10 @@ export function GoogleMeetRecording({
           </div>
           {output.recordingId && (
             <div className="mt-4 text-muted-foreground text-xs">
-              Recording ID: <code className="rounded bg-muted px-1 py-0.5 font-mono">{output.recordingId}</code>
+              Recording ID:{' '}
+              <code className="rounded bg-muted px-1 py-0.5 font-mono">
+                {output.recordingId}
+              </code>
             </div>
           )}
         </CardContent>
@@ -245,9 +262,9 @@ export function GoogleMeetRecording({
     );
   }
 
-  if (output?.action === "get_details" && output?.success === true) {
+  if (output?.action === 'get_details' && output?.success === true) {
     const recording = output.recording;
-    
+
     return (
       <Card>
         <CardHeader>
@@ -331,4 +348,3 @@ export function GoogleMeetRecording({
 
   return null;
 }
-

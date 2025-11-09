@@ -1,4 +1,4 @@
-import { agents, getDefaultAgent, type AgentId } from "./agents";
+import { type AgentId, agents, getDefaultAgent } from './agents';
 
 export const DEFAULT_CHAT_MODEL: string = getDefaultAgent().id;
 
@@ -11,21 +11,22 @@ export type ChatModel = {
 // Legacy models for backward compatibility
 export const chatModels: ChatModel[] = [
   {
-    id: "chat-model",
-    name: "Gemini 2.5 Pro",
-    description: "Most powerful thinking model with features for complex reasoning",
+    id: 'chat-model',
+    name: 'Gemini 2.5 Pro',
+    description:
+      'Most powerful thinking model with features for complex reasoning',
   },
   {
-    id: "chat-model-reasoning",
-    name: "Gemini 2.5 Flash",
+    id: 'chat-model-reasoning',
+    name: 'Gemini 2.5 Flash',
     description:
-      "Balanced model with 1M token context window, optimized for general-purpose tasks",
+      'Balanced model with 1M token context window, optimized for general-purpose tasks',
   },
   {
-    id: "chat-model-lite",
-    name: "Gemini 2.5 Flash-Lite",
+    id: 'chat-model-lite',
+    name: 'Gemini 2.5 Flash-Lite',
     description:
-      "Fastest and most cost-efficient multimodal model with great performance",
+      'Fastest and most cost-efficient multimodal model with great performance',
   },
 ];
 

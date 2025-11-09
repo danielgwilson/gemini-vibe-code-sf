@@ -1,7 +1,7 @@
 import { config } from 'dotenv';
-import postgres from 'postgres';
 import { readFileSync } from 'fs';
 import { join } from 'path';
+import postgres from 'postgres';
 
 config({
   path: '.env.local',
@@ -17,7 +17,7 @@ const runMigration = async () => {
   try {
     const migrationSQL = readFileSync(
       join(process.cwd(), 'supabase/migrations/0001_add_stream_table.sql'),
-      'utf-8'
+      'utf-8',
     );
 
     console.log('⏳ Adding missing tables (Stream, Document, Suggestion)...');

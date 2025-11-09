@@ -1,6 +1,6 @@
-import { createUser, getUser } from '@/lib/db/queries';
-import type { NextAuthOptions, DefaultSession } from 'next-auth';
+import type { DefaultSession, NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { createUser, getUser } from '@/lib/db/queries';
 
 if (!process.env.GOOGLE_CLIENT_ID) {
   throw new Error('Missing GOOGLE_CLIENT_ID in .env.local');
@@ -80,7 +80,9 @@ export const authOptions: NextAuthOptions = {
           }
         } catch (error) {
           console.error('❌ FATAL ERROR creating user:', error);
-          throw new Error(`Database error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          throw new Error(
+            `Database error: ${error instanceof Error ? error.message : 'Unknown error'}`,
+          );
         }
       }
 
@@ -102,23 +104,26 @@ export const authOptions: NextAuthOptions = {
         // Refresh if token expires in less than 5 minutes
         if (token.expiresAt - now < 5 * 60 * 1000) {
           try {
-            const response = await fetch('https://oauth2.googleapis.com/token', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
+            const response = await fetch(
+              'https://oauth2.googleapis.com/token',
+              {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                  client_id: process.env.GOOGLE_CLIENT_ID!,
+                  client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+                  refresh_token: token.refreshToken,
+                  grant_type: 'refresh_token',
+                }),
               },
-              body: new URLSearchParams({
-                client_id: process.env.GOOGLE_CLIENT_ID!,
-                client_secret: process.env.GOOGLE_CLIENT_SECRET!,
-                refresh_token: token.refreshToken,
-                grant_type: 'refresh_token',
-              }),
-            });
+            );
 
             if (response.ok) {
               const data = await response.json();
               token.accessToken = data.access_token;
-              token.expiresAt = Date.now() + (data.expires_in * 1000);
+              token.expiresAt = Date.now() + data.expires_in * 1000;
               if (data.refresh_token) {
                 token.refreshToken = data.refresh_token;
               }
@@ -147,7 +152,7 @@ export const authOptions: NextAuthOptions = {
         session.user.id = token.id;
         session.user.type = (token.type as UserType) || 'regular';
       }
-      
+
       // Include access token in session for API calls
       if (token.accessToken) {
         session.accessToken = token.accessToken;

@@ -12,9 +12,7 @@ export const firecrawlMap = () =>
         .number()
         .optional()
         .default(10)
-        .describe(
-          'Maximum number of URLs to discover (default: 10, max: 100)'
-        ),
+        .describe('Maximum number of URLs to discover (default: 10, max: 100)'),
       search: z
         .string()
         .optional()
@@ -22,7 +20,9 @@ export const firecrawlMap = () =>
       sitemap: z
         .enum(['only', 'include', 'skip'])
         .optional()
-        .describe('How to handle sitemap (only sitemap, include sitemap, or skip sitemap)'),
+        .describe(
+          'How to handle sitemap (only sitemap, include sitemap, or skip sitemap)',
+        ),
     }),
     execute: async ({ url, limit = 10, search, sitemap }) => {
       try {
@@ -77,4 +77,3 @@ export const firecrawlMap = () =>
       }
     },
   });
-

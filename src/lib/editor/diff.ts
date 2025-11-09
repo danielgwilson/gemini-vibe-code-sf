@@ -2,18 +2,18 @@
 // It is based on the prosemirror-changeset library, but adapted to our needs.
 // The original library can be found at https://github.com/prosemirror/prosemirror-changeset
 
-import { type Change, ChangeSet } from "prosemirror-changeset";
+import { type Change, ChangeSet } from 'prosemirror-changeset';
 import {
   Fragment,
   type Node as ProsemirrorNode,
   type Schema,
   Slice,
-} from "prosemirror-model";
-import { Step } from "prosemirror-transform";
+} from 'prosemirror-model';
+import { Step } from 'prosemirror-transform';
 
 export enum DiffType {
-  Inserted = "inserted",
-  Deleted = "deleted",
+  Inserted = 'inserted',
+  Deleted = 'deleted',
 }
 
 export function diffEditor(
@@ -44,7 +44,7 @@ function getReplaceStep(oldDoc: ProsemirrorNode, newDoc: ProsemirrorNode) {
 
   if (slice) {
     replaceStep.push({
-      stepType: "replace",
+      stepType: 'replace',
       from,
       to,
       slice: slice.toJSON(),
@@ -75,7 +75,7 @@ function applyChangeSet(
           });
 
           const textNode = schema.text(
-            node.text?.substring(from - pos, to - pos) ?? "",
+            node.text?.substring(from - pos, to - pos) ?? '',
             [insertedMark],
           );
 
@@ -99,7 +99,7 @@ function applyChangeSet(
           type: DiffType.Deleted,
         });
 
-        const textNode = schema.text(deletedNode.text ?? "", [
+        const textNode = schema.text(deletedNode.text ?? '', [
           ...(deletedNode.marks ?? []),
           deletedMark,
         ]);

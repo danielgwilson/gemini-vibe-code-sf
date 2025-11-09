@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import type { UseChatHelpers } from "@ai-sdk/react";
-import { Trigger } from "@radix-ui/react-select";
-import type { UIMessage } from "ai";
-import equal from "fast-deep-equal";
+import type { UseChatHelpers } from '@ai-sdk/react';
+import { Trigger } from '@radix-ui/react-select';
+import type { UIMessage } from 'ai';
+import equal from 'fast-deep-equal';
 import {
   type ChangeEvent,
   type Dispatch,
@@ -15,18 +15,18 @@ import {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { toast } from "sonner";
-import { useLocalStorage, useWindowSize } from "usehooks-ts";
-import { saveChatModelAsCookie } from "@/app/api/chat/actions";
-import { SelectItem } from "@/components/ui/select";
-import { agents, getAgentById } from "@/lib/ai/agents";
-import { agentModels, chatModels } from "@/lib/ai/models";
-import { myProvider } from "@/lib/ai/providers";
-import type { Attachment, ChatMessage } from "@/lib/types";
-import type { AppUsage } from "@/lib/usage";
-import { cn } from "@/lib/utils";
-import { Context } from "./elements/context";
+} from 'react';
+import { toast } from 'sonner';
+import { useLocalStorage, useWindowSize } from 'usehooks-ts';
+import { saveChatModelAsCookie } from '@/app/api/chat/actions';
+import { SelectItem } from '@/components/ui/select';
+import { agents, getAgentById } from '@/lib/ai/agents';
+import { agentModels, chatModels } from '@/lib/ai/models';
+import { myProvider } from '@/lib/ai/providers';
+import type { Attachment, ChatMessage } from '@/lib/types';
+import type { AppUsage } from '@/lib/usage';
+import { cn } from '@/lib/utils';
+import { Context } from './elements/context';
 import {
   PromptInput,
   PromptInputModelSelect,
@@ -35,18 +35,18 @@ import {
   PromptInputTextarea,
   PromptInputToolbar,
   PromptInputTools,
-} from "./elements/prompt-input";
+} from './elements/prompt-input';
 import {
   ArrowUpIcon,
   ChevronDownIcon,
   CpuIcon,
   PaperclipIcon,
   StopIcon,
-} from "./icons";
-import { PreviewAttachment } from "./preview-attachment";
-import { SuggestedActions } from "./suggested-actions";
-import { Button } from "./ui/button";
-import type { VisibilityType } from "./visibility-selector";
+} from './icons';
+import { PreviewAttachment } from './preview-attachment';
+import { SuggestedActions } from './suggested-actions';
+import { Button } from './ui/button';
+import type { VisibilityType } from './visibility-selector';
 
 function PureMultimodalInput({
   chatId,
@@ -68,13 +68,13 @@ function PureMultimodalInput({
   chatId: string;
   input: string;
   setInput: Dispatch<SetStateAction<string>>;
-  status: UseChatHelpers<ChatMessage>["status"];
+  status: UseChatHelpers<ChatMessage>['status'];
   stop: () => void;
   attachments: Attachment[];
   setAttachments: Dispatch<SetStateAction<Attachment[]>>;
   messages: UIMessage[];
-  setMessages: UseChatHelpers<ChatMessage>["setMessages"];
-  sendMessage: UseChatHelpers<ChatMessage>["sendMessage"];
+  setMessages: UseChatHelpers<ChatMessage>['setMessages'];
+  sendMessage: UseChatHelpers<ChatMessage>['sendMessage'];
   className?: string;
   selectedVisibilityType: VisibilityType;
   selectedModelId: string;
@@ -86,7 +86,7 @@ function PureMultimodalInput({
 
   const adjustHeight = useCallback(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "44px";
+      textareaRef.current.style.height = '44px';
     }
   }, []);
 
@@ -98,20 +98,20 @@ function PureMultimodalInput({
 
   const resetHeight = useCallback(() => {
     if (textareaRef.current) {
-      textareaRef.current.style.height = "44px";
+      textareaRef.current.style.height = '44px';
     }
   }, []);
 
   const [localStorageInput, setLocalStorageInput] = useLocalStorage(
-    "input",
-    "",
+    'input',
+    '',
   );
 
   useEffect(() => {
     if (textareaRef.current) {
       const domValue = textareaRef.current.value;
       // Prefer DOM value over localStorage to handle hydration
-      const finalValue = domValue || localStorageInput || "";
+      const finalValue = domValue || localStorageInput || '';
       setInput(finalValue);
       adjustHeight();
     }
@@ -131,28 +131,28 @@ function PureMultimodalInput({
   const [uploadQueue, setUploadQueue] = useState<string[]>([]);
 
   const submitForm = useCallback(() => {
-    window.history.pushState({}, "", `/chat/${chatId}`);
+    window.history.pushState({}, '', `/chat/${chatId}`);
 
     sendMessage({
-      role: "user",
+      role: 'user',
       parts: [
         ...attachments.map((attachment) => ({
-          type: "file" as const,
+          type: 'file' as const,
           url: attachment.url,
           name: attachment.name,
           mediaType: attachment.contentType,
         })),
         {
-          type: "text",
+          type: 'text',
           text: input,
         },
       ],
     });
 
     setAttachments([]);
-    setLocalStorageInput("");
+    setLocalStorageInput('');
     resetHeight();
-    setInput("");
+    setInput('');
 
     if (width && width > 768) {
       textareaRef.current?.focus();
@@ -171,11 +171,11 @@ function PureMultimodalInput({
 
   const uploadFile = useCallback(async (file: File) => {
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append('file', file);
 
     try {
-      const response = await fetch("/api/files/upload", {
-        method: "POST",
+      const response = await fetch('/api/files/upload', {
+        method: 'POST',
         body: formData,
       });
 
@@ -192,7 +192,7 @@ function PureMultimodalInput({
       const { error } = await response.json();
       toast.error(error);
     } catch (_error) {
-      toast.error("Failed to upload file, please try again!");
+      toast.error('Failed to upload file, please try again!');
     }
   }, []);
 
@@ -228,7 +228,7 @@ function PureMultimodalInput({
           ...successfullyUploadedAttachments,
         ]);
       } catch (error) {
-        console.error("Error uploading files!", error);
+        console.error('Error uploading files!', error);
       } finally {
         setUploadQueue([]);
       }
@@ -242,7 +242,7 @@ function PureMultimodalInput({
       if (!items) return;
 
       const imageItems = Array.from(items).filter((item) =>
-        item.type.startsWith("image/"),
+        item.type.startsWith('image/'),
       );
 
       if (imageItems.length === 0) return;
@@ -250,7 +250,7 @@ function PureMultimodalInput({
       // Prevent default paste behavior for images
       event.preventDefault();
 
-      setUploadQueue((prev) => [...prev, "Pasted image"]);
+      setUploadQueue((prev) => [...prev, 'Pasted image']);
 
       try {
         const uploadPromises = imageItems.map(async (item) => {
@@ -272,8 +272,8 @@ function PureMultimodalInput({
           ...(successfullyUploadedAttachments as Attachment[]),
         ]);
       } catch (error) {
-        console.error("Error uploading pasted images:", error);
-        toast.error("Failed to upload pasted image(s)");
+        console.error('Error uploading pasted images:', error);
+        toast.error('Failed to upload pasted image(s)');
       } finally {
         setUploadQueue([]);
       }
@@ -286,12 +286,12 @@ function PureMultimodalInput({
     const textarea = textareaRef.current;
     if (!textarea) return;
 
-    textarea.addEventListener("paste", handlePaste);
-    return () => textarea.removeEventListener("paste", handlePaste);
+    textarea.addEventListener('paste', handlePaste);
+    return () => textarea.removeEventListener('paste', handlePaste);
   }, [handlePaste]);
 
   return (
-    <div className={cn("relative flex w-full flex-col gap-4", className)}>
+    <div className={cn('relative flex w-full flex-col gap-4', className)}>
       {messages.length === 0 &&
         attachments.length === 0 &&
         uploadQueue.length === 0 && (
@@ -316,16 +316,18 @@ function PureMultimodalInput({
         className="rounded-xl border border-border/50 bg-background/60 backdrop-blur-xl p-3 shadow-lg transition-all duration-200 focus-within:border-border/80 hover:border-muted-foreground/50"
         style={(() => {
           const agent = getAgentById(selectedModelId);
-          return agent ? {
-            background: `linear-gradient(135deg, ${agent.color}08 0%, transparent 100%), rgba(var(--background), 0.6)`,
-            borderColor: `${agent.color}30`,
-            boxShadow: `0 8px 32px 0 ${agent.color}10, 0 0 0 1px ${agent.color}20`,
-          } : {};
+          return agent
+            ? {
+                background: `linear-gradient(135deg, ${agent.color}08 0%, transparent 100%), rgba(var(--background), 0.6)`,
+                borderColor: `${agent.color}30`,
+                boxShadow: `0 8px 32px 0 ${agent.color}10, 0 0 0 1px ${agent.color}20`,
+              }
+            : {};
         })()}
         onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
           event.preventDefault();
-          if (status !== "ready") {
-            toast.error("Please wait for the model to finish its response!");
+          if (status !== 'ready') {
+            toast.error('Please wait for the model to finish its response!');
           } else {
             submitForm();
           }
@@ -345,7 +347,7 @@ function PureMultimodalInput({
                     currentAttachments.filter((a) => a.url !== attachment.url),
                   );
                   if (fileInputRef.current) {
-                    fileInputRef.current.value = "";
+                    fileInputRef.current.value = '';
                   }
                 }}
               />
@@ -354,9 +356,9 @@ function PureMultimodalInput({
             {uploadQueue.map((filename) => (
               <PreviewAttachment
                 attachment={{
-                  url: "",
+                  url: '',
                   name: filename,
-                  contentType: "",
+                  contentType: '',
                 }}
                 isUploading={true}
                 key={filename}
@@ -377,7 +379,7 @@ function PureMultimodalInput({
             ref={textareaRef}
             rows={1}
             value={input}
-          />{" "}
+          />{' '}
           <Context {...contextProps} />
         </div>
         <PromptInputToolbar className="!border-top-0 border-t-0! p-0 shadow-none dark:border-0 dark:border-transparent!">
@@ -393,7 +395,7 @@ function PureMultimodalInput({
             />
           </PromptInputTools>
 
-          {status === "submitted" ? (
+          {status === 'submitted' ? (
             <StopButton setMessages={setMessages} stop={stop} />
           ) : (
             <PromptInputSubmit
@@ -440,16 +442,16 @@ function PureAttachmentsButton({
   selectedModelId,
 }: {
   fileInputRef: React.MutableRefObject<HTMLInputElement | null>;
-  status: UseChatHelpers<ChatMessage>["status"];
+  status: UseChatHelpers<ChatMessage>['status'];
   selectedModelId: string;
 }) {
-  const isReasoningModel = selectedModelId === "chat-model-reasoning";
+  const isReasoningModel = selectedModelId === 'chat-model-reasoning';
 
   return (
     <Button
       className="aspect-square h-8 rounded-lg p-1 transition-colors hover:bg-accent"
       data-testid="attachments-button"
-      disabled={status !== "ready" || isReasoningModel}
+      disabled={status !== 'ready' || isReasoningModel}
       onClick={(event) => {
         event.preventDefault();
         fileInputRef.current?.click();
@@ -477,8 +479,12 @@ function PureModelSelectorCompact({
   }, [selectedModelId]);
 
   const selectedAgent = getAgentById(optimisticModelId);
-  const selectedModel = selectedAgent 
-    ? { id: selectedAgent.id, name: selectedAgent.name, description: selectedAgent.description }
+  const selectedModel = selectedAgent
+    ? {
+        id: selectedAgent.id,
+        name: selectedAgent.name,
+        description: selectedAgent.description,
+      }
     : chatModels.find((model) => model.id === optimisticModelId);
 
   return (
@@ -506,13 +512,17 @@ function PureModelSelectorCompact({
       value={selectedAgent?.name || selectedModel?.name}
     >
       <Trigger asChild>
-        <Button 
-          variant="ghost" 
+        <Button
+          variant="ghost"
           className="h-8 px-2 backdrop-blur-sm bg-background/60 border border-border/50 hover:bg-background/80 transition-all"
-          style={selectedAgent ? {
-            background: `linear-gradient(135deg, ${selectedAgent.color}15 0%, ${selectedAgent.color}05 100%)`,
-            borderColor: `${selectedAgent.color}30`,
-          } : {}}
+          style={
+            selectedAgent
+              ? {
+                  background: `linear-gradient(135deg, ${selectedAgent.color}15 0%, ${selectedAgent.color}05 100%)`,
+                  borderColor: `${selectedAgent.color}30`,
+                }
+              : {}
+          }
         >
           {selectedAgent ? (
             <span className="text-lg mr-1.5">{selectedAgent.icon}</span>
@@ -531,18 +541,19 @@ function PureModelSelectorCompact({
             Agents
           </div>
           {agents.map((agent) => (
-            <SelectItem 
-              key={agent.id} 
+            <SelectItem
+              key={agent.id}
               value={agent.name}
               className="rounded-lg p-3 cursor-pointer hover:bg-accent/50 transition-all pl-8"
               style={{
-                background: optimisticModelId === agent.id 
-                  ? `linear-gradient(135deg, ${agent.color}15 0%, ${agent.color}05 100%)`
-                  : 'transparent',
+                background:
+                  optimisticModelId === agent.id
+                    ? `linear-gradient(135deg, ${agent.color}15 0%, ${agent.color}05 100%)`
+                    : 'transparent',
               }}
             >
               <div className="flex items-start gap-3">
-                <div 
+                <div
                   className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-xl backdrop-blur-sm border-2 -ml-1"
                   style={{
                     background: agent.gradient,
@@ -553,8 +564,10 @@ function PureModelSelectorCompact({
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <div className="truncate font-semibold text-sm">{agent.name}</div>
-                    <div 
+                    <div className="truncate font-semibold text-sm">
+                      {agent.name}
+                    </div>
+                    <div
                       className="w-2 h-2 rounded-full"
                       style={{ background: agent.color }}
                     />
@@ -584,7 +597,11 @@ function PureModelSelectorCompact({
             Models
           </div>
           {chatModels.map((model) => (
-            <SelectItem key={model.id} value={model.name} className="rounded-lg p-2 pl-8">
+            <SelectItem
+              key={model.id}
+              value={model.name}
+              className="rounded-lg p-2 pl-8"
+            >
               <div className="truncate font-medium text-xs">{model.name}</div>
               <div className="mt-px truncate text-[10px] text-muted-foreground leading-tight">
                 {model.description}
@@ -604,7 +621,7 @@ function PureStopButton({
   setMessages,
 }: {
   stop: () => void;
-  setMessages: UseChatHelpers<ChatMessage>["setMessages"];
+  setMessages: UseChatHelpers<ChatMessage>['setMessages'];
 }) {
   return (
     <Button

@@ -1,5 +1,5 @@
-import { tool } from "ai";
-import { z } from "zod";
+import { tool } from 'ai';
+import { z } from 'zod';
 
 async function geocodeCity(
   city: string,
@@ -29,7 +29,7 @@ async function geocodeCity(
 
 export const getWeather = tool({
   description:
-    "Get the current weather at a location. You can provide either coordinates or a city name.",
+    'Get the current weather at a location. You can provide either coordinates or a city name.',
   inputSchema: z.object({
     latitude: z.number().optional(),
     longitude: z.number().optional(),
@@ -40,51 +40,57 @@ export const getWeather = tool({
   }),
   execute: async (input) => {
     try {
-    let latitude: number;
-    let longitude: number;
+      let latitude: number;
+      let longitude: number;
 
-    if (input.city) {
-      const coords = await geocodeCity(input.city);
-      if (!coords) {
+      if (input.city) {
+        const coords = await geocodeCity(input.city);
+        if (!coords) {
+          return {
+            error: `Could not find coordinates for "${input.city}". Please check the city name.`,
+          };
+        }
+        latitude = coords.latitude;
+        longitude = coords.longitude;
+      } else if (
+        input.latitude !== undefined &&
+        input.longitude !== undefined
+      ) {
+        latitude = input.latitude;
+        longitude = input.longitude;
+      } else {
         return {
-          error: `Could not find coordinates for "${input.city}". Please check the city name.`,
+          error:
+            'Please provide either a city name or both latitude and longitude coordinates.',
         };
       }
-      latitude = coords.latitude;
-      longitude = coords.longitude;
-    } else if (input.latitude !== undefined && input.longitude !== undefined) {
-      latitude = input.latitude;
-      longitude = input.longitude;
-    } else {
-      return {
-        error:
-          "Please provide either a city name or both latitude and longitude coordinates.",
-      };
-    }
 
-    const response = await fetch(
-      `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`,
-    );
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m&hourly=temperature_2m&daily=sunrise,sunset&timezone=auto`,
+      );
 
-    if (!response.ok) {
-      return {
-        error: `WEATHER API ERROR: Failed to fetch weather data. Status: ${response.status} ${response.statusText}`,
-      };
-    }
+      if (!response.ok) {
+        return {
+          error: `WEATHER API ERROR: Failed to fetch weather data. Status: ${response.status} ${response.statusText}`,
+        };
+      }
 
-    const weatherData = await response.json();
+      const weatherData = await response.json();
 
-    // Validate we got weather data
-    if (!weatherData || (!weatherData.current && !weatherData.hourly && !weatherData.daily)) {
-      return {
-        error:
-          'WEATHER DATA INVALID: Received invalid weather data from API. The weather service may be unavailable.',
-      };
-    }
+      // Validate we got weather data
+      if (
+        !weatherData ||
+        (!weatherData.current && !weatherData.hourly && !weatherData.daily)
+      ) {
+        return {
+          error:
+            'WEATHER DATA INVALID: Received invalid weather data from API. The weather service may be unavailable.',
+        };
+      }
 
-    if ("city" in input) {
-      weatherData.cityName = input.city;
-    }
+      if ('city' in input) {
+        weatherData.cityName = input.city;
+      }
 
       return weatherData;
     } catch (error) {

@@ -19,7 +19,7 @@ export const googleCalendar = ({ session }: GoogleCalendarProps) =>
       action: z
         .enum(['create_event', 'list_events'])
         .describe(
-          'Action to perform: "create_event" to schedule a new event, "list_events" to view upcoming events'
+          'Action to perform: "create_event" to schedule a new event, "list_events" to view upcoming events',
         ),
       summary: z
         .string()
@@ -30,13 +30,13 @@ export const googleCalendar = ({ session }: GoogleCalendarProps) =>
         .string()
         .optional()
         .describe(
-          'Start time in ISO 8601 format (e.g., "2024-12-15T14:00:00Z") - required for create_event'
+          'Start time in ISO 8601 format (e.g., "2024-12-15T14:00:00Z") - required for create_event',
         ),
       endTime: z
         .string()
         .optional()
         .describe(
-          'End time in ISO 8601 format (e.g., "2024-12-15T16:00:00Z") - required for create_event'
+          'End time in ISO 8601 format (e.g., "2024-12-15T16:00:00Z") - required for create_event',
         ),
       location: z.string().optional().describe('Event location'),
       attendees: z
@@ -44,7 +44,7 @@ export const googleCalendar = ({ session }: GoogleCalendarProps) =>
           z.object({
             email: z.string().email(),
             name: z.string().optional(),
-          })
+          }),
         )
         .optional()
         .describe('List of attendees (for guest episodes)'),
@@ -53,7 +53,7 @@ export const googleCalendar = ({ session }: GoogleCalendarProps) =>
         .optional()
         .default(false)
         .describe(
-          'Whether to add a Google Meet link to the event (use true for recording sessions)'
+          'Whether to add a Google Meet link to the event (use true for recording sessions)',
         ),
       timeMin: z
         .string()
@@ -178,7 +178,7 @@ export const googleCalendar = ({ session }: GoogleCalendarProps) =>
           const events = await listCalendarEvents(
             calendar,
             timeMinDate,
-            timeMaxDate
+            timeMaxDate,
           );
 
           return {
@@ -191,7 +191,7 @@ export const googleCalendar = ({ session }: GoogleCalendarProps) =>
               end: event.end?.dateTime || event.end?.date,
               htmlLink: event.htmlLink,
               meetLink: event.conferenceData?.entryPoints?.find(
-                (ep) => ep.entryPointType === 'video'
+                (ep) => ep.entryPointType === 'video',
               )?.uri,
             })),
             count: events.length,

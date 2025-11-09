@@ -1,9 +1,9 @@
-import { Header } from "@/components/header"
-import { Hero } from "@/components/hero"
-import { AgentCards } from "@/components/agent-cards"
-import { HowItWorks } from "@/components/how-it-works"
-import { CTA } from "@/components/cta"
-import { Footer } from "@/components/footer"
+import { AgentCards } from '@/components/agent-cards';
+import { CTA } from '@/components/cta';
+import { Footer } from '@/components/footer';
+import { Header } from '@/components/header';
+import { Hero } from '@/components/hero';
+import { HowItWorks } from '@/components/how-it-works';
 
 export default function HomePage() {
   return (
@@ -25,5 +25,5 @@ export default function HomePage() {
       </main>
       <Footer />
     </div>
-  )
+  );
 }

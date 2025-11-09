@@ -1,6 +1,5 @@
-'use client'
+'use client';
 
-import { useToast } from '@/components/landing/ui/use-toast'
 import {
   Toast,
   ToastClose,
@@ -8,21 +7,28 @@ import {
   ToastProvider,
   ToastTitle,
   ToastViewport,
-} from '@/components/landing/ui/toast'
+} from '@/components/landing/ui/toast';
+import { useToast } from '@/components/landing/ui/use-toast';
 
 export function Toaster() {
-  const { toasts } = useToast()
+  const { toasts } = useToast();
 
   return (
     <ToastProvider>
-      {toasts.map(function ({ id, title, description, action, ...props }: {
-        id: string
-        title?: React.ReactNode
-        description?: React.ReactNode
-        action?: React.ReactNode
-        [key: string]: any
-      }) {
-        return (
+      {toasts.map(
+        ({
+          id,
+          title,
+          description,
+          action,
+          ...props
+        }: {
+          id: string;
+          title?: React.ReactNode;
+          description?: React.ReactNode;
+          action?: React.ReactNode;
+          [key: string]: any;
+        }) => (
           <Toast key={id} {...props}>
             <div className="grid gap-1">
               {title && <ToastTitle>{title}</ToastTitle>}
@@ -33,9 +39,9 @@ export function Toaster() {
             {action}
             <ToastClose />
           </Toast>
-        )
-      })}
+        ),
+      )}
       <ToastViewport />
     </ToastProvider>
-  )
+  );
 }

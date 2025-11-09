@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button"
-import { Logo } from "@/components/logo"
+import { Logo } from '@/components/logo';
+import { Button } from '@/components/ui/button';
 
 export function Header() {
   return (
@@ -8,13 +8,22 @@ export function Header() {
         <Logo />
 
         <nav className="hidden md:flex items-center gap-6">
-          <a href="#agents" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <a
+            href="#agents"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
             Agents
           </a>
-          <a href="#how-it-works" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <a
+            href="#how-it-works"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
             How It Works
           </a>
-          <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <a
+            href="#pricing"
+            className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
             Pricing
           </a>
         </nav>
@@ -29,5 +38,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

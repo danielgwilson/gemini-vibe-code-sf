@@ -1,7 +1,7 @@
 'use client';
 
-import { signIn } from 'next-auth/react';
 import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 import { Suspense } from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -57,11 +57,13 @@ function LoginForm() {
 
 export default function Page() {
   return (
-    <Suspense fallback={
-      <div className="flex h-dvh w-screen items-center justify-center bg-background">
-        <div className="text-gray-500 text-sm">Loading...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex h-dvh w-screen items-center justify-center bg-background">
+          <div className="text-gray-500 text-sm">Loading...</div>
+        </div>
+      }
+    >
       <LoginForm />
     </Suspense>
   );

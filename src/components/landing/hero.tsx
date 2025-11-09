@@ -1,21 +1,21 @@
-"use client"
+'use client';
 
-import { signIn, useSession } from "next-auth/react"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/landing/ui/button"
-import { Sparkles, Mic } from "lucide-react"
+import { Mic, Sparkles } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { signIn, useSession } from 'next-auth/react';
+import { Button } from '@/components/landing/ui/button';
 
 export function Hero() {
-  const { data: session } = useSession()
-  const router = useRouter()
+  const { data: session } = useSession();
+  const router = useRouter();
 
   const handleStartCreating = async () => {
     if (session) {
-      router.push("/chat")
+      router.push('/chat');
     } else {
-      await signIn("google", { callbackUrl: "/chat" })
+      await signIn('google', { callbackUrl: '/chat' });
     }
-  }
+  };
 
   return (
     <section className="py-20 md:py-32 px-4 relative">
@@ -23,7 +23,9 @@ export function Hero() {
         <div className="text-center space-y-8">
           <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass border-primary/20 shadow-lg shadow-primary/5">
             <Sparkles className="w-4 h-4 text-primary" />
-            <span className="text-sm font-semibold text-gradient-gemini">AI-Powered Podcast Creation</span>
+            <span className="text-sm font-semibold text-gradient-gemini">
+              AI-Powered Podcast Creation
+            </span>
           </div>
 
           <h1 className="text-5xl sm:text-6xl md:text-7xl font-extrabold text-balance leading-[1.1] tracking-tight">
@@ -33,8 +35,9 @@ export function Hero() {
           </h1>
 
           <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto text-balance leading-relaxed font-medium">
-            Meet your three AI agents that handle everything from ideation to production. Launch your podcast with the
-            support of a full creative team.
+            Meet your three AI agents that handle everything from ideation to
+            production. Launch your podcast with the support of a full creative
+            team.
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -61,5 +64,5 @@ export function Hero() {
         </div>
       </div>
     </section>
-  )
+  );
 }

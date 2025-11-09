@@ -2,13 +2,13 @@
 
 import type { ToolUIPart } from 'ai';
 import {
+  AlertCircleIcon,
   CheckCircleIcon,
   ChevronDownIcon,
   CircleIcon,
   ClockIcon,
   WrenchIcon,
   XCircleIcon,
-  AlertCircleIcon,
 } from 'lucide-react';
 import type { ComponentProps, ReactNode } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -95,7 +95,7 @@ export const ToolHeader = ({
   <CollapsibleTrigger
     className={cn(
       'flex w-full min-w-0 items-center justify-between gap-2 p-3',
-      className
+      className,
     )}
     {...props}
   >
@@ -118,7 +118,7 @@ export const ToolContent = ({ className, ...props }: ToolContentProps) => (
   <CollapsibleContent
     className={cn(
       'data-[state=closed]:fade-out-0 data-[state=closed]:slide-out-to-top-2 data-[state=open]:slide-in-from-top-2 text-popover-foreground outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in',
-      className
+      className,
     )}
     {...props}
   />

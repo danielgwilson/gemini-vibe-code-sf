@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import { Suspense } from "react";
-import { Chat } from "./chat";
-import type { ChatMessage } from "@/lib/types";
-import type { VisibilityType } from "./visibility-selector";
-import type { AppUsage } from "@/lib/usage";
+import { Suspense } from 'react';
+import type { ChatMessage } from '@/lib/types';
+import type { AppUsage } from '@/lib/usage';
+import { Chat } from './chat';
+import type { VisibilityType } from './visibility-selector';
 
 function ChatWithSearchParams({
   id,
@@ -54,11 +54,13 @@ export function ChatWrapper({
   initialLastContext?: AppUsage;
 }) {
   return (
-    <Suspense fallback={
-      <div className="flex h-screen items-center justify-center bg-background">
-        <div className="text-gray-500 text-sm">Loading...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex h-screen items-center justify-center bg-background">
+          <div className="text-gray-500 text-sm">Loading...</div>
+        </div>
+      }
+    >
       <ChatWithSearchParams
         autoResume={autoResume}
         id={id}
@@ -71,4 +73,3 @@ export function ChatWrapper({
     </Suspense>
   );
 }
-

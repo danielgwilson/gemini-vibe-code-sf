@@ -1,3 +1,4 @@
+import { google } from '@ai-sdk/google';
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -21,16 +22,15 @@ import { getAgentById } from '@/lib/ai/agents';
 import { entitlementsByUserType } from '@/lib/ai/entitlements';
 import type { ChatModel } from '@/lib/ai/models';
 import { type RequestHints, systemPrompt } from '@/lib/ai/prompts';
-import { google } from '@ai-sdk/google';
 import { myProvider } from '@/lib/ai/providers';
 import { createDocument } from '@/lib/ai/tools/create-document';
-import { firecrawlScrape } from '@/lib/ai/tools/firecrawl-scrape';
 import { firecrawlCrawl } from '@/lib/ai/tools/firecrawl-crawl';
-import { firecrawlMap } from '@/lib/ai/tools/firecrawl-map';
-import { firecrawlSearch } from '@/lib/ai/tools/firecrawl-search';
 import { firecrawlExtract } from '@/lib/ai/tools/firecrawl-extract';
-import { gmail } from '@/lib/ai/tools/gmail';
+import { firecrawlMap } from '@/lib/ai/tools/firecrawl-map';
+import { firecrawlScrape } from '@/lib/ai/tools/firecrawl-scrape';
+import { firecrawlSearch } from '@/lib/ai/tools/firecrawl-search';
 import { getWeather } from '@/lib/ai/tools/get-weather';
+import { gmail } from '@/lib/ai/tools/gmail';
 import { googleCalendar } from '@/lib/ai/tools/google-calendar';
 import { googleDriveWrite } from '@/lib/ai/tools/google-drive-write';
 import { googleMeetCreate } from '@/lib/ai/tools/google-meet-create';
@@ -67,13 +67,13 @@ const getTokenlensCatalog = cache(
     } catch (err) {
       console.warn(
         'TokenLens: catalog fetch failed, using default catalog',
-        err
+        err,
       );
       return; // tokenlens helpers will fall back to defaultCatalog
     }
   },
   ['tokenlens-catalog'],
-  { revalidate: 24 * 60 * 60 } // 24 hours
+  { revalidate: 24 * 60 * 60 }, // 24 hours
 );
 
 export function getStreamContext() {
@@ -85,7 +85,7 @@ export function getStreamContext() {
     } catch (error: unknown) {
       if (error instanceof Error && error.message.includes('REDIS_URL')) {
         console.log(
-          ' > Resumable streams are disabled due to missing REDIS_URL'
+          ' > Resumable streams are disabled due to missing REDIS_URL',
         );
       } else {
         console.error('Failed to create resumable stream context:', {
@@ -208,26 +208,25 @@ export async function POST(request: Request) {
           system: systemPrompt({ selectedChatModel, requestHints }),
           messages: convertToModelMessages(uiMessages),
           stopWhen: stepCountIs(5),
-          experimental_activeTools:
-            isReasoningModel
-              ? []
-              : [
-                  'getWeather',
-                  'createDocument',
-                  'updateDocument',
-                  'requestSuggestions',
-                  'readGoogleMeetRecording',
-                  'googleCalendar',
-                  'googleDriveWrite',
-                  'googleMeetCreate',
-                  'gmail',
-                  'firecrawlScrape',
-                  'firecrawlCrawl',
-                  'firecrawlMap',
-                  'firecrawlSearch',
-                  'firecrawlExtract',
-                  'code_execution',
-                ],
+          experimental_activeTools: isReasoningModel
+            ? []
+            : [
+                'getWeather',
+                'createDocument',
+                'updateDocument',
+                'requestSuggestions',
+                'readGoogleMeetRecording',
+                'googleCalendar',
+                'googleDriveWrite',
+                'googleMeetCreate',
+                'gmail',
+                'firecrawlScrape',
+                'firecrawlCrawl',
+                'firecrawlMap',
+                'firecrawlSearch',
+                'firecrawlExtract',
+                'code_execution',
+              ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
             getWeather,
@@ -247,7 +246,7 @@ export async function POST(request: Request) {
             firecrawlMap: firecrawlMap(),
             firecrawlSearch: firecrawlSearch(),
             firecrawlExtract: firecrawlExtract(),
-            code_execution: google.tools.codeExecution({}),
+            code_execution: google.tools.codeExecution({}) as any,
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,
@@ -256,8 +255,7 @@ export async function POST(request: Request) {
           onFinish: async ({ usage }) => {
             try {
               const providers = await getTokenlensCatalog();
-              const modelId =
-                myProvider.languageModel(actualModelId).modelId;
+              const modelId = myProvider.languageModel(actualModelId).modelId;
               if (!modelId) {
                 finalMergedUsage = usage;
                 dataStream.write({
@@ -295,7 +293,7 @@ export async function POST(request: Request) {
         dataStream.merge(
           result.toUIMessageStream({
             sendReasoning: true,
-          })
+          }),
         );
       },
       generateId: generateUUID,

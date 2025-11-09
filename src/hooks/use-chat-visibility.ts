@@ -1,15 +1,15 @@
-"use client";
+'use client';
 
-import { useMemo } from "react";
-import useSWR, { useSWRConfig } from "swr";
-import { unstable_serialize } from "swr/infinite";
-import { updateChatVisibility } from "@/app/api/chat/actions";
+import { useMemo } from 'react';
+import useSWR, { useSWRConfig } from 'swr';
+import { unstable_serialize } from 'swr/infinite';
+import { updateChatVisibility } from '@/app/api/chat/actions';
 import {
   type ChatHistory,
   getChatHistoryPaginationKey,
-} from "@/components/sidebar-history";
-import type { VisibilityType } from "@/components/visibility-selector";
-import type { Chat } from "@/lib/db/schema";
+} from '@/components/sidebar-history';
+import type { VisibilityType } from '@/components/visibility-selector';
+import type { Chat } from '@/lib/db/schema';
 
 export function useChatVisibility({
   chatId,
@@ -19,7 +19,7 @@ export function useChatVisibility({
   initialVisibilityType: VisibilityType;
 }) {
   const { mutate, cache } = useSWRConfig();
-  const history: ChatHistory = cache.get("/api/history")?.data;
+  const history: ChatHistory = cache.get('/api/history')?.data;
 
   const { data: localVisibility, mutate: setLocalVisibility } = useSWR(
     `${chatId}-visibility`,
@@ -37,7 +37,7 @@ export function useChatVisibility({
       (currentChat: Chat) => currentChat.id === chatId,
     );
     if (!chat) {
-      return "private";
+      return 'private';
     }
     return chat.visibility;
   }, [history, chatId, localVisibility]);

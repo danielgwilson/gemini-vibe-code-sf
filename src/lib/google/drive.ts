@@ -6,7 +6,9 @@ import type { Session } from 'next-auth';
  */
 export function getDriveClient(session: Session) {
   if (!session.accessToken) {
-    throw new Error('No access token available in session. User may need to re-authenticate.');
+    throw new Error(
+      'No access token available in session. User may need to re-authenticate.',
+    );
   }
 
   const oauth2Client = new google.auth.OAuth2();
@@ -23,7 +25,9 @@ export function getDriveClient(session: Session) {
 /**
  * Find the "Meet Recordings" folder in the user's Google Drive
  */
-export async function findMeetRecordingsFolder(drive: ReturnType<typeof getDriveClient>) {
+export async function findMeetRecordingsFolder(
+  drive: ReturnType<typeof getDriveClient>,
+) {
   try {
     const response = await drive.files.list({
       q: "name='Meet Recordings' and mimeType='application/vnd.google-apps.folder' and trashed=false",
@@ -129,7 +133,8 @@ export async function getRecordingDetails(
   try {
     const file = await drive.files.get({
       fileId: recordingId,
-      fields: 'id, name, mimeType, createdTime, size, webViewLink, webContentLink',
+      fields:
+        'id, name, mimeType, createdTime, size, webViewLink, webContentLink',
     });
 
     return file.data;
@@ -258,4 +263,3 @@ export async function createTextFile(
     throw error;
   }
 }
-

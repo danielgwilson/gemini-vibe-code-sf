@@ -1,17 +1,17 @@
-"use client";
+'use client';
 
-import { signIn } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { signIn } from 'next-auth/react';
+import { Suspense } from 'react';
+import { Button } from '@/components/ui/button';
 
 function RegisterForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/chat';
 
   const handleGoogleSignIn = async () => {
-    await signIn("google", { callbackUrl });
+    await signIn('google', { callbackUrl });
   };
 
   return (
@@ -51,14 +51,14 @@ function RegisterForm() {
             Continue with Google
           </Button>
           <p className="mt-4 text-center text-gray-600 text-sm dark:text-zinc-400">
-            {"Already have an account? "}
+            {'Already have an account? '}
             <Link
               className="font-semibold text-gray-800 hover:underline dark:text-zinc-200"
               href="/login"
             >
               Sign in
             </Link>
-            {" instead."}
+            {' instead.'}
           </p>
         </div>
       </div>
@@ -68,11 +68,13 @@ function RegisterForm() {
 
 export default function Page() {
   return (
-    <Suspense fallback={
-      <div className="flex h-dvh w-screen items-center justify-center bg-background">
-        <div className="text-gray-500 text-sm">Loading...</div>
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex h-dvh w-screen items-center justify-center bg-background">
+          <div className="text-gray-500 text-sm">Loading...</div>
+        </div>
+      }
+    >
       <RegisterForm />
     </Suspense>
   );

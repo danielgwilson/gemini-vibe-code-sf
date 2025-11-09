@@ -12,9 +12,7 @@ export const firecrawlCrawl = () =>
         .number()
         .optional()
         .default(10)
-        .describe(
-          'Maximum number of pages to crawl (default: 10, max: 100)'
-        ),
+        .describe('Maximum number of pages to crawl (default: 10, max: 100)'),
       formats: z
         .array(z.enum(['markdown', 'html', 'rawHtml']))
         .optional()
@@ -97,9 +95,7 @@ export const firecrawlCrawl = () =>
                 metadata: page.metadata,
               }))
             : [],
-          count: Array.isArray(crawlResult.data)
-            ? crawlResult.data.length
-            : 0,
+          count: Array.isArray(crawlResult.data) ? crawlResult.data.length : 0,
           total: crawlResult.total,
           completed: crawlResult.completed,
         };
@@ -118,4 +114,3 @@ export const firecrawlCrawl = () =>
       }
     },
   });
-

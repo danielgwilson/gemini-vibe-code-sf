@@ -18,7 +18,12 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
       'Create folders and files in Google Drive. Use this to set up podcast folder structures, save episode templates, briefing docs, outlines, show notes, and other production assets.',
     inputSchema: z.object({
       action: z
-        .enum(['create_folder', 'create_doc', 'create_file', 'setup_podcast_folders'])
+        .enum([
+          'create_folder',
+          'create_doc',
+          'create_file',
+          'setup_podcast_folders',
+        ])
         .describe(
           'Action to perform: "create_folder" to create a folder, "create_doc" to create a Google Doc, "create_file" to create a text file, "setup_podcast_folders" to create the standard podcast folder structure',
         ),
@@ -38,16 +43,23 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
         .string()
         .optional()
         .describe('Document/file content (for create_doc and create_file)'),
-      fileName: z
-        .string()
-        .optional()
-        .describe('File name (for create_file)'),
+      fileName: z.string().optional().describe('File name (for create_file)'),
       mimeType: z
         .string()
         .optional()
-        .describe('MIME type for file (defaults to text/plain for create_file)'),
+        .describe(
+          'MIME type for file (defaults to text/plain for create_file)',
+        ),
     }),
-    execute: async ({ action, folderName, parentFolderId, title, content, fileName, mimeType }) => {
+    execute: async ({
+      action,
+      folderName,
+      parentFolderId,
+      title,
+      content,
+      fileName,
+      mimeType,
+    }) => {
       try {
         if (!session.accessToken) {
           return {
@@ -77,19 +89,37 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
 
           if (!podcastFolder || !podcastFolder.id) {
             return {
-              error: 'CRITICAL: Failed to create Podcast folder. The operation did not succeed.',
+              error:
+                'CRITICAL: Failed to create Podcast folder. The operation did not succeed.',
             };
           }
 
           // Create subfolders
-          const brandingFolder = await findOrCreateFolder(drive, '01_Branding', podcastFolder.id);
-          const episodesFolder = await findOrCreateFolder(drive, '02_Episodes', podcastFolder.id);
-          const marketingFolder = await findOrCreateFolder(drive, '03_Marketing_Assets', podcastFolder.id);
+          const brandingFolder = await findOrCreateFolder(
+            drive,
+            '01_Branding',
+            podcastFolder.id,
+          );
+          const episodesFolder = await findOrCreateFolder(
+            drive,
+            '02_Episodes',
+            podcastFolder.id,
+          );
+          const marketingFolder = await findOrCreateFolder(
+            drive,
+            '03_Marketing_Assets',
+            podcastFolder.id,
+          );
 
           // Validate all folders were created
-          if (!brandingFolder?.id || !episodesFolder?.id || !marketingFolder?.id) {
+          if (
+            !brandingFolder?.id ||
+            !episodesFolder?.id ||
+            !marketingFolder?.id
+          ) {
             return {
-              error: 'CRITICAL: Failed to create one or more subfolders. Some folders may not have been created.',
+              error:
+                'CRITICAL: Failed to create one or more subfolders. Some folders may not have been created.',
             };
           }
 
@@ -124,11 +154,16 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
             };
           }
 
-          const folder = await findOrCreateFolder(drive, folderName, parentFolderId);
+          const folder = await findOrCreateFolder(
+            drive,
+            folderName,
+            parentFolderId,
+          );
 
           if (!folder || !folder.id) {
             return {
-              error: 'CRITICAL: Folder creation failed - no folder ID returned. The folder was NOT created.',
+              error:
+                'CRITICAL: Folder creation failed - no folder ID returned. The folder was NOT created.',
             };
           }
 
@@ -157,7 +192,8 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
 
           if (!doc || !doc.id) {
             return {
-              error: 'CRITICAL: Document creation failed - no document ID returned. The document was NOT created.',
+              error:
+                'CRITICAL: Document creation failed - no document ID returned. The document was NOT created.',
             };
           }
 
@@ -194,7 +230,8 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
 
           if (!file || !file.id) {
             return {
-              error: 'CRITICAL: File creation failed - no file ID returned. The file was NOT created.',
+              error:
+                'CRITICAL: File creation failed - no file ID returned. The file was NOT created.',
             };
           }
 
@@ -282,4 +319,3 @@ export const googleDriveWrite = ({ session }: GoogleDriveWriteProps) =>
       }
     },
   });
-
