@@ -52,10 +52,11 @@ const db = drizzle(client);
 export async function getUser(email: string): Promise<User[]> {
   try {
     return await db.select().from(user).where(eq(user.email, email));
-  } catch (_error) {
+  } catch (error) {
+    console.error('❌ getUser database error:', error);
     throw new ChatSDKError(
       "bad_request:database",
-      "Failed to get user by email",
+      `Failed to get user by email: ${error instanceof Error ? error.message : 'Unknown error'}`,
     );
   }
 }
@@ -65,8 +66,9 @@ export async function createUser(email: string, password: string) {
 
   try {
     return await db.insert(user).values({ email, password: hashedPassword });
-  } catch (_error) {
-    throw new ChatSDKError("bad_request:database", "Failed to create user");
+  } catch (error) {
+    console.error('❌ createUser database error:', error);
+    throw new ChatSDKError("bad_request:database", `Failed to create user: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 }
 

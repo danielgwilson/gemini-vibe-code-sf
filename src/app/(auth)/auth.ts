@@ -60,14 +60,22 @@ export const authOptions: NextAuthOptions = {
     async signIn({ user }) {
       // Handle Google OAuth sign in - create user in database if doesn't exist
       if (user.email) {
-        const existingUsers = await getUser(user.email);
+        try {
+          const existingUsers = await getUser(user.email);
 
-        if (existingUsers.length === 0) {
-          // Create user - OAuth users don't need passwords, but schema requires it
-          // Generate a random password hash (they'll never use it)
-          const { generateUUID } = await import('@/lib/utils');
-          const randomPassword = generateUUID();
-          await createUser(user.email, randomPassword);
+          if (existingUsers.length === 0) {
+            // Create user - OAuth users don't need passwords, but schema requires it
+            // Generate a random password hash (they'll never use it)
+            const { generateUUID } = await import('@/lib/utils');
+            const randomPassword = generateUUID();
+            await createUser(user.email, randomPassword);
+            console.log('✅ User created successfully:', user.email);
+          } else {
+            console.log('✅ User already exists:', user.email);
+          }
+        } catch (error) {
+          console.error('❌ FATAL ERROR creating user:', error);
+          throw new Error(`Database error: ${error instanceof Error ? error.message : 'Unknown error'}`);
         }
       }
 
