@@ -1,7 +1,22 @@
+"use client"
+
+import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/landing/ui/button"
 import { ArrowRight } from "lucide-react"
 
 export function CTA() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  const handleStartPodcast = async () => {
+    if (session) {
+      router.push("/chat")
+    } else {
+      await signIn("google", { callbackUrl: "/chat" })
+    }
+  }
+
   return (
     <section className="py-20 px-4 relative overflow-hidden">
       <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-chart-4/20 to-accent/20" />
@@ -21,6 +36,7 @@ export function CTA() {
           <Button
             size="lg"
             className="text-base px-8 h-12 bg-gradient-to-r from-primary to-chart-4 hover:opacity-90 transition-opacity shadow-lg shadow-primary/25"
+            onClick={handleStartPodcast}
           >
             Start Your Podcast
             <ArrowRight className="w-5 h-5 ml-2" />

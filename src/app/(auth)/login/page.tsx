@@ -1,11 +1,11 @@
-"use client";
+'use client';
 
-import { signIn } from "next-auth/react";
-import { Button } from "@/components/ui/button";
+import { signIn } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
 
 export default function Page() {
   const handleGoogleSignIn = async () => {
-    await signIn("google", { callbackUrl: "/" });
+    await signIn('google', { callbackUrl: '/chat' });
   };
 
   return (

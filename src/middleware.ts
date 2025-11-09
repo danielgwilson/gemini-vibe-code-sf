@@ -17,6 +17,11 @@ export async function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
+  // Allow public landing page
+  if (pathname === '/') {
+    return NextResponse.next();
+  }
+
   // Allow public auth pages
   if (['/login', '/register'].includes(pathname)) {
     const token = await getToken({
@@ -25,16 +30,16 @@ export async function middleware(request: NextRequest) {
       secureCookie: !isDevelopmentEnvironment,
     });
 
-    // If already logged in, redirect to home
+    // If already logged in, redirect to chat
     if (token) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL('/chat', request.url));
     }
 
     // Allow access to login/register pages
     return NextResponse.next();
   }
 
-  // For all other routes, require authentication
+  // For all other routes (including /chat), require authentication
   const token = await getToken({
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
@@ -53,18 +58,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/',
-    '/chat/:id',
-    '/api/:path*',
-    '/login',
-    '/register',
-
     /*
      * Match all request paths except for the ones starting with:
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico, sitemap.xml, robots.txt (metadata files)
+     * - public files
      */
-    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)',
+    '/((?!_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico)).*)',
   ],
 };

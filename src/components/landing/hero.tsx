@@ -1,7 +1,22 @@
+"use client"
+
+import { signIn, useSession } from "next-auth/react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/landing/ui/button"
 import { Sparkles, Mic } from "lucide-react"
 
 export function Hero() {
+  const { data: session } = useSession()
+  const router = useRouter()
+
+  const handleStartCreating = async () => {
+    if (session) {
+      router.push("/chat")
+    } else {
+      await signIn("google", { callbackUrl: "/chat" })
+    }
+  }
+
   return (
     <section className="py-20 md:py-32 px-4 relative">
       <div className="container mx-auto max-w-6xl">
@@ -26,6 +41,7 @@ export function Hero() {
             <Button
               size="lg"
               className="text-base font-semibold px-8 h-12 bg-gradient-to-r from-chart-1 via-chart-5 to-chart-4 hover:opacity-90 transition-all hover:scale-105 shadow-xl shadow-primary/25"
+              onClick={handleStartCreating}
             >
               <Mic className="w-5 h-5 mr-2" />
               Start Creating
