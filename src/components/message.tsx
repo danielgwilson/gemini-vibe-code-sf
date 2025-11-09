@@ -68,7 +68,8 @@ const PurePreviewMessage = ({
     >
       <div
         className={cn('flex w-full items-start gap-2 md:gap-3', {
-          'justify-start': true,
+          'justify-end': message.role === 'user',
+          'justify-start': message.role === 'assistant',
         })}
       >
         {message.role === 'assistant' && (
