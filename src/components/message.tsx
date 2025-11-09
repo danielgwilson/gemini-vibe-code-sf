@@ -91,12 +91,12 @@ const PurePreviewMessage = ({
         )}
 
         <div
-          className={cn("flex flex-col", {
+          className={cn("flex flex-col min-w-0", {
             "gap-2 md:gap-4": message.parts?.some(
               (p) => p.type === "text" && p.text?.trim(),
             ),
             "min-h-96": message.role === "assistant" && requiresScrollPadding,
-            "w-full":
+            "w-full max-w-full":
               (message.role === "assistant" &&
                 message.parts?.some(
                   (p) => p.type === "text" && p.text?.trim(),
@@ -141,12 +141,12 @@ const PurePreviewMessage = ({
             if (type === "text") {
               if (mode === "view") {
                 return (
-                  <div key={key}>
+                  <div key={key} className="min-w-0">
                     <MessageContent
                       className={cn({
                         "w-fit break-words rounded-2xl px-3 py-2 text-right text-white":
                           message.role === "user",
-                        "bg-transparent px-0 py-0 text-left":
+                        "bg-transparent px-4 py-3 text-left break-words [overflow-wrap:anywhere]":
                           message.role === "assistant",
                       })}
                       data-testid="message-content"
@@ -156,7 +156,7 @@ const PurePreviewMessage = ({
                           : undefined
                       }
                     >
-                      <Response>{sanitizeText(part.text)}</Response>
+                      <Response className="break-words [overflow-wrap:anywhere]">{sanitizeText(part.text)}</Response>
                     </MessageContent>
                   </div>
                 );
