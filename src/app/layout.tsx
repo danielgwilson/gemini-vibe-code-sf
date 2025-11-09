@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import type React from "react";
 import { Plus_Jakarta_Sans, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from 'next-themes';
@@ -19,12 +19,6 @@ export const metadata: Metadata = {
   title: "GEMCAST - AI Podcast Automation",
   description: "Your podcast team, powered by AI",
   generator: "v0.app",
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 5,
-    userScalable: true,
-  },
   icons: {
     icon: [
       {
@@ -42,6 +36,13 @@ export const metadata: Metadata = {
     ],
     apple: "/apple-icon.png",
   },
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
+  userScalable: true,
 };
 
 export default async function RootLayout({

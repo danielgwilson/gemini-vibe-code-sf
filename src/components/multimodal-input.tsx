@@ -568,7 +568,7 @@ function PureModelSelectorCompact({
                         key={capability}
                         className="text-[10px] px-1.5 py-0.5 rounded-md backdrop-blur-sm"
                         style={{
-                          background: `oklch(from ${agent.color} l c h / 0.15)`,
+                          background: `${agent.color}15`,
                           color: agent.color,
                         }}
                       >
