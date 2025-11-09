@@ -39,11 +39,11 @@ type googleCalendarTool = InferUITool<ReturnType<typeof googleCalendar>>;
 type googleDriveWriteTool = InferUITool<ReturnType<typeof googleDriveWrite>>;
 type googleMeetCreateTool = InferUITool<ReturnType<typeof googleMeetCreate>>;
 type gmailTool = InferUITool<ReturnType<typeof gmail>>;
-type firecrawlScrapeTool = InferUITool<ReturnType<typeof firecrawlScrape>>;
-type firecrawlCrawlTool = InferUITool<ReturnType<typeof firecrawlCrawl>>;
-type firecrawlMapTool = InferUITool<ReturnType<typeof firecrawlMap>>;
-type firecrawlSearchTool = InferUITool<ReturnType<typeof firecrawlSearch>>;
-type firecrawlExtractTool = InferUITool<ReturnType<typeof firecrawlExtract>>;
+type firecrawlScrapeTool = InferUITool<typeof firecrawlScrape>;
+type firecrawlCrawlTool = InferUITool<typeof firecrawlCrawl>;
+type firecrawlMapTool = InferUITool<typeof firecrawlMap>;
+type firecrawlSearchTool = InferUITool<typeof firecrawlSearch>;
+type firecrawlExtractTool = InferUITool<typeof firecrawlExtract>;
 
 export type ChatTools = {
   getWeather: weatherTool;

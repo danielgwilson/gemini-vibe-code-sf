@@ -42,6 +42,16 @@ const getToolDisplayName = (type: string): string => {
     'tool-createDocument': 'Create Document',
     'tool-updateDocument': 'Update Document',
     'tool-requestSuggestions': 'Request Suggestions',
+    'tool-firecrawlSearch': 'Firecrawl Search',
+    'tool-firecrawlScrape': 'Firecrawl Scrape',
+    'tool-firecrawlExtract': 'Firecrawl Extract',
+    'tool-firecrawlCrawl': 'Firecrawl Crawl',
+    'tool-firecrawlMap': 'Firecrawl Map',
+    'tool-googleCalendar': 'Google Calendar',
+    'tool-googleDriveWrite': 'Google Drive Write',
+    'tool-googleMeetCreate': 'Google Meet Create',
+    'tool-gmail': 'Gmail',
+    'tool-code_execution': 'Code Execution',
   };
 
   // If we have a mapped name, use it

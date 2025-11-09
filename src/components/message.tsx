@@ -19,6 +19,7 @@ import {
   ToolInput,
   ToolOutput,
 } from './elements/tool';
+import type { ToolUIPart } from 'ai';
 import { GoogleMeetRecording } from './google-meet-recording';
 import { SparklesIcon } from './icons';
 import { MessageActions } from './message-actions';
@@ -52,7 +53,7 @@ const PurePreviewMessage = ({
   const agent = getAgentById(selectedModelId);
 
   const attachmentsFromMessage = message.parts.filter(
-    (part) => part.type === 'file',
+    (part) => part.type === 'file'
   );
 
   useDataStream();
@@ -67,8 +68,7 @@ const PurePreviewMessage = ({
     >
       <div
         className={cn('flex w-full items-start gap-2 md:gap-3', {
-          'justify-end': message.role === 'user' && mode !== 'edit',
-          'justify-start': message.role === 'assistant',
+          'justify-start': true,
         })}
       >
         {message.role === 'assistant' && (
@@ -97,13 +97,13 @@ const PurePreviewMessage = ({
         <div
           className={cn('flex flex-col min-w-0', {
             'gap-2 md:gap-4': message.parts?.some(
-              (p) => p.type === 'text' && p.text?.trim(),
+              (p) => p.type === 'text' && p.text?.trim()
             ),
             'min-h-96': message.role === 'assistant' && requiresScrollPadding,
             'w-full max-w-full':
               (message.role === 'assistant' &&
                 message.parts?.some(
-                  (p) => p.type === 'text' && p.text?.trim(),
+                  (p) => p.type === 'text' && p.text?.trim()
                 )) ||
               mode === 'edit',
             'max-w-[calc(100%-2.5rem)] sm:max-w-[min(fit-content,80%)]':
@@ -112,7 +112,7 @@ const PurePreviewMessage = ({
         >
           {attachmentsFromMessage.length > 0 && (
             <div
-              className="flex flex-row justify-end gap-2"
+              className="flex flex-row justify-start gap-2"
               data-testid={'message-attachments'}
             >
               {attachmentsFromMessage.map((attachment) => (
@@ -148,7 +148,7 @@ const PurePreviewMessage = ({
                   <div key={key} className="min-w-0">
                     <MessageContent
                       className={cn({
-                        'w-fit break-words rounded-2xl px-3 py-2 text-right text-white':
+                        'w-fit break-words rounded-2xl px-3 py-2 text-left text-white':
                           message.role === 'user',
                         'bg-transparent px-4 py-3 text-left break-words [overflow-wrap:anywhere]':
                           message.role === 'assistant',
@@ -323,6 +323,138 @@ const PurePreviewMessage = ({
               );
             }
 
+            // Firecrawl tools
+            if (
+              type === 'tool-firecrawlSearch' ||
+              type === 'tool-firecrawlScrape' ||
+              type === 'tool-firecrawlExtract' ||
+              type === 'tool-firecrawlCrawl' ||
+              type === 'tool-firecrawlMap'
+            ) {
+              const { toolCallId, state } = part;
+
+              return (
+                <Tool defaultOpen={true} key={toolCallId}>
+                  <ToolHeader state={state} type={type} />
+                  <ToolContent>
+                    {state === 'input-available' && (
+                      <ToolInput input={part.input} />
+                    )}
+                    {state === 'output-available' && (
+                      <ToolOutput
+                        errorText={
+                          part.output &&
+                          typeof part.output === 'object' &&
+                          'error' in part.output
+                            ? String(part.output.error)
+                            : undefined
+                        }
+                        output={
+                          part.output &&
+                          typeof part.output === 'object' &&
+                          'error' in part.output ? null : (
+                            <div className="rounded-md bg-muted/50 p-3">
+                              <pre className="overflow-x-auto text-xs">
+                                {JSON.stringify(part.output, null, 2)}
+                              </pre>
+                            </div>
+                          )
+                        }
+                      />
+                    )}
+                  </ToolContent>
+                </Tool>
+              );
+            }
+
+            // Google tools (googleCalendar, googleDriveWrite, googleMeetCreate, gmail)
+            if (
+              type === 'tool-googleCalendar' ||
+              type === 'tool-googleDriveWrite' ||
+              type === 'tool-googleMeetCreate' ||
+              type === 'tool-gmail'
+            ) {
+              const { toolCallId, state } = part;
+
+              return (
+                <Tool defaultOpen={true} key={toolCallId}>
+                  <ToolHeader state={state} type={type} />
+                  <ToolContent>
+                    {state === 'input-available' && (
+                      <ToolInput input={part.input} />
+                    )}
+                    {state === 'output-available' && (
+                      <ToolOutput
+                        errorText={
+                          part.output &&
+                          typeof part.output === 'object' &&
+                          'error' in part.output
+                            ? String(part.output.error)
+                            : undefined
+                        }
+                        output={
+                          part.output &&
+                          typeof part.output === 'object' &&
+                          'error' in part.output ? null : (
+                            <div className="rounded-md bg-muted/50 p-3">
+                              <pre className="overflow-x-auto text-xs">
+                                {JSON.stringify(part.output, null, 2)}
+                              </pre>
+                            </div>
+                          )
+                        }
+                      />
+                    )}
+                  </ToolContent>
+                </Tool>
+              );
+            }
+
+            // Fallback for any unknown tool types (including code_execution and any other tools)
+            // Exclude dynamic-tool and only handle actual tool-* types
+            if (
+              type.startsWith('tool-') &&
+              type !== 'dynamic-tool' &&
+              'toolCallId' in part &&
+              'state' in part
+            ) {
+              const toolPart = part as unknown as ToolUIPart;
+              const { toolCallId, state } = toolPart;
+
+              return (
+                <Tool defaultOpen={true} key={toolCallId}>
+                  <ToolHeader state={state} type={type as `tool-${string}`} />
+                  <ToolContent>
+                    {state === 'input-available' && (
+                      <ToolInput input={toolPart.input} />
+                    )}
+                    {state === 'output-available' && (
+                      <ToolOutput
+                        errorText={
+                          toolPart.output &&
+                          typeof toolPart.output === 'object' &&
+                          'error' in toolPart.output
+                            ? String(toolPart.output.error)
+                            : undefined
+                        }
+                        output={
+                          toolPart.output &&
+                          typeof toolPart.output === 'object' &&
+                          'error' in toolPart.output ? null : (
+                            <div className="rounded-md bg-muted/50 p-3">
+                              <pre className="overflow-x-auto text-xs">
+                                {JSON.stringify(toolPart.output, null, 2)}
+                              </pre>
+                            </div>
+                          )
+                        }
+                      />
+                    )}
+                  </ToolContent>
+                </Tool>
+              );
+            }
+
             return null;
           })}
 
@@ -365,7 +497,7 @@ export const PreviewMessage = memo(
     }
 
     return false;
-  },
+  }
 );
 
 export const ThinkingMessage = ({
