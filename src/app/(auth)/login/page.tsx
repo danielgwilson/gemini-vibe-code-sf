@@ -1,11 +1,15 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
+import { useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 
 export default function Page() {
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get('callbackUrl') || '/chat';
+
   const handleGoogleSignIn = async () => {
-    await signIn('google', { callbackUrl: '/chat' });
+    await signIn('google', { callbackUrl });
   };
 
   return (
