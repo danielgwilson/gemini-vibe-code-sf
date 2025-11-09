@@ -12,12 +12,14 @@ export const myProvider = isTestEnvironment
         artifactModel,
         chatModel,
         reasoningModel,
+        liteModel,
         titleModel,
       } = require("./models.mock");
       return customProvider({
         languageModels: {
           "chat-model": chatModel,
           "chat-model-reasoning": reasoningModel,
+          "chat-model-lite": liteModel,
           "title-model": titleModel,
           "artifact-model": artifactModel,
         },
@@ -25,12 +27,10 @@ export const myProvider = isTestEnvironment
     })()
   : customProvider({
       languageModels: {
-        "chat-model": google("models/gemini-1.5-pro-latest"),
-        "chat-model-reasoning": wrapLanguageModel({
-          model: google("models/gemini-2.5-flash-preview-04-17"),
-          middleware: extractReasoningMiddleware({ tagName: "think" }),
-        }),
-        "title-model": google("models/gemini-2.5-flash-preview-04-17"),
-        "artifact-model": google("models/gemini-1.5-pro-latest"),
+        "chat-model": google("models/gemini-2.5-pro"),
+        "chat-model-reasoning": google("models/gemini-2.5-flash"),
+        "chat-model-lite": google("models/gemini-2.5-flash-lite"),
+        "title-model": google("models/gemini-2.5-flash"),
+        "artifact-model": google("models/gemini-2.5-pro"),
       },
     });
