@@ -2,10 +2,9 @@ import Firecrawl from '@mendable/firecrawl-js';
 import { tool } from 'ai';
 import { z } from 'zod';
 
-export const firecrawlSearch = () =>
-  tool({
+export const firecrawlSearch = tool({
     description:
-      'Search the web and optionally scrape search results. Use this to find relevant web pages, articles, or content based on a search query. Can search across web, news, and images sources.',
+      'Firecrawl web search tool: Search the internet and optionally scrape search results. Use this to find relevant web pages, articles, or content based on a search query. Can search across web, news, and images sources. This is the primary tool for web research and finding information online.',
     inputSchema: z.object({
       query: z.string().describe('The search query'),
       sources: z

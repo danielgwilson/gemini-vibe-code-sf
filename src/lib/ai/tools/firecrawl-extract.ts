@@ -2,10 +2,9 @@ import Firecrawl from '@mendable/firecrawl-js';
 import { tool } from 'ai';
 import { z } from 'zod';
 
-export const firecrawlExtract = () =>
-  tool({
+export const firecrawlExtract = tool({
     description:
-      'Extract structured data from web pages using natural language prompts or JSON schemas. Use this to extract specific information like product details, contact info, or any structured data from web pages.',
+      'Firecrawl data extraction tool: Extract structured data from web pages using natural language prompts or JSON schemas. Use this to extract specific information like product details, contact info, or any structured data from web pages. This tool accesses web pages and extracts structured data.',
     inputSchema: z.object({
       urls: z.array(z.string().url()).describe('URLs to extract data from'),
       prompt: z

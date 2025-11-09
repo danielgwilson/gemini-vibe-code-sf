@@ -2,10 +2,9 @@ import Firecrawl from '@mendable/firecrawl-js';
 import { tool } from 'ai';
 import { z } from 'zod';
 
-export const firecrawlMap = () =>
-  tool({
+export const firecrawlMap = tool({
     description:
-      'Map a website to discover all URLs quickly. Use this to get a complete list of URLs from a website without scraping the content. Useful for site discovery, sitemap generation, or finding all pages on a site.',
+      'Firecrawl website mapping tool: Map a website to discover all URLs quickly. Use this to get a complete list of URLs from a website without scraping the content. Useful for site discovery, sitemap generation, or finding all pages on a site. This tool accesses websites to discover their structure.',
     inputSchema: z.object({
       url: z.string().url().describe('The root URL to map'),
       limit: z

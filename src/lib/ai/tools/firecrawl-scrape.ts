@@ -2,10 +2,9 @@ import Firecrawl from '@mendable/firecrawl-js';
 import { tool } from 'ai';
 import { z } from 'zod';
 
-export const firecrawlScrape = () =>
-  tool({
+export const firecrawlScrape = tool({
     description:
-      'Scrape a single webpage and extract its content in markdown, HTML, or raw HTML format. Use this to get the full content of a specific URL for research, content analysis, or data extraction.',
+      'Firecrawl web scraping tool: Scrape a single webpage and extract its content in markdown, HTML, or raw HTML format. Use this to get the full content of a specific URL for research, content analysis, or data extraction. This tool accesses web pages and extracts their content.',
     inputSchema: z.object({
       url: z.string().url().describe('The URL to scrape'),
       formats: z
