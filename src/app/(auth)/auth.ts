@@ -16,15 +16,16 @@ if (!process.env.NEXTAUTH_SECRET) {
 
 export type UserType = 'regular';
 
+// biome-ignore lint/nursery/useConsistentTypeDefinitions: "Required"
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
       id: string;
       type: UserType;
     } & DefaultSession['user'];
+    accessToken?: string;
   }
 
-  // biome-ignore lint/nursery/useConsistentTypeDefinitions: "Required"
   interface User {
     id?: string;
     email?: string | null;
@@ -36,6 +37,9 @@ declare module 'next-auth/jwt' {
   interface JWT {
     id?: string;
     type?: UserType;
+    accessToken?: string;
+    refreshToken?: string;
+    expiresAt?: number;
   }
 }
 
@@ -52,6 +56,7 @@ export const authOptions: NextAuthOptions = {
         params: {
           scope:
             'openid email profile https://www.googleapis.com/auth/meetings.space.created https://www.googleapis.com/auth/drive.meet.readonly https://www.googleapis.com/auth/calendar.app.created',
+          access_type: 'offline',
         },
       },
     }),
@@ -81,7 +86,51 @@ export const authOptions: NextAuthOptions = {
 
       return true;
     },
-    async jwt({ token, user }) {
+    async jwt({ token, user, account, trigger }) {
+      // Store tokens when account is available (on sign in or token refresh)
+      if (account) {
+        token.accessToken = account.access_token;
+        token.refreshToken = account.refresh_token;
+        token.expiresAt = account.expires_at
+          ? account.expires_at * 1000 // Convert to milliseconds
+          : undefined;
+      }
+
+      // Handle token refresh if needed
+      if (trigger === 'update' && token.refreshToken && token.expiresAt) {
+        const now = Date.now();
+        // Refresh if token expires in less than 5 minutes
+        if (token.expiresAt - now < 5 * 60 * 1000) {
+          try {
+            const response = await fetch('https://oauth2.googleapis.com/token', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+              },
+              body: new URLSearchParams({
+                client_id: process.env.GOOGLE_CLIENT_ID!,
+                client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+                refresh_token: token.refreshToken,
+                grant_type: 'refresh_token',
+              }),
+            });
+
+            if (response.ok) {
+              const data = await response.json();
+              token.accessToken = data.access_token;
+              token.expiresAt = Date.now() + (data.expires_in * 1000);
+              if (data.refresh_token) {
+                token.refreshToken = data.refresh_token;
+              }
+            }
+          } catch (error) {
+            console.error('Error refreshing token:', error);
+            // Token refresh failed, will need to re-authenticate
+            token.accessToken = undefined;
+          }
+        }
+      }
+
       if (user && user.email) {
         // Fetch user ID from database
         const users = await getUser(user.email);
@@ -97,6 +146,11 @@ export const authOptions: NextAuthOptions = {
       if (session.user && token.id) {
         session.user.id = token.id;
         session.user.type = (token.type as UserType) || 'regular';
+      }
+      
+      // Include access token in session for API calls
+      if (token.accessToken) {
+        session.accessToken = token.accessToken;
       }
 
       return session;
