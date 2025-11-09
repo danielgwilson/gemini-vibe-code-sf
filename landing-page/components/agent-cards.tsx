@@ -1,18 +1,18 @@
 import { Card } from "@/components/ui/card"
-import { Lightbulb, Search, Calendar } from "lucide-react"
+import { Lightbulb, Calendar, Sparkles } from "lucide-react"
 
 const agents = [
   {
     name: "Ida",
     role: "The Idea Agent",
     icon: Lightbulb,
-    description: "Your podcast idea generator and content strategist",
+    description: "Your podcast strategist and creative partner",
     features: [
-      "Generates podcast ideas from themes for different timelines",
-      "Recommends ideas based on follower growth and ROI",
-      "Creates actionable episode plans focused on your niche",
-      "Helps you decide which ideas to pursue",
-      "Transforms themes into concrete episode concepts",
+      "Guides you through concept & ideation from scratch",
+      "Helps define your niche, audience, and brand voice",
+      "Creates your podcast name, tagline, and content pillars",
+      "Plans your first 3-5 episodes",
+      "Makes you feel excited and supported every step",
     ],
     gradient: "from-chart-1 to-chart-2",
     iconBg: "bg-chart-1/15",
@@ -20,15 +20,15 @@ const agents = [
   },
   {
     name: "Astra",
-    role: "The Research Agent",
-    icon: Search,
-    description: "Your research and validation specialist using Firecrawl",
+    role: "The Accountability Co-Pilot",
+    icon: Calendar,
+    description: "Your production planner and efficiency expert",
     features: [
-      "Researches competitors using Firecrawl web search",
-      "Validates if your podcast topics are unique and relevant",
-      "Identifies market trends and content gaps",
-      "Compares your ideas against competitor content",
-      "Provides data-driven validation for podcast ideas",
+      "Plans your episode production schedules",
+      "Syncs with Google Calendar and Google Drive",
+      "Creates batched production days for efficiency",
+      "Optimizes your workflow to reduce context-switching",
+      "Turns creative dreams into actionable plans",
     ],
     gradient: "from-chart-4 to-chart-5",
     iconBg: "bg-chart-4/15",
@@ -36,15 +36,15 @@ const agents = [
   },
   {
     name: "Ember",
-    role: "The Calendar Agent",
-    icon: Calendar,
-    description: "Your Google Calendar organizer and production coordinator",
+    role: "The Episode Producer",
+    icon: Sparkles,
+    description: "Your hands-on producer for pre and post-production",
     features: [
-      "Organizes podcast episodes in Google Calendar",
-      "Creates production schedules with tasks for each episode",
-      "Plans episode calendar based on your availability",
-      "Sets up episode tasks and deadlines",
-      "Coordinates workflow between planning, recording, and publishing",
+      "Finds guests and writes outreach emails",
+      "Creates guest briefing docs and episode outlines",
+      "Handles post-production editing and show notes",
+      "Finds viral 60-second clips for social media",
+      "Gets your episodes ready to publish",
     ],
     gradient: "from-chart-3 to-chart-2",
     iconBg: "bg-chart-3/15",

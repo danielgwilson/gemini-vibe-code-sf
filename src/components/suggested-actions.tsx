@@ -22,41 +22,41 @@ const getAgentSuggestions = (agentId: string): string[] => {
   if (!agent) {
     // Fallback for legacy models - use default podcast-focused suggestions
     return [
-      "Generate podcast ideas from themes for different timelines",
-      "Research competitors for my podcast idea using Firecrawl",
-      "Organize my podcast episodes in Google Calendar",
-      "Help me brainstorm podcast ideas focused on my niche and brand",
+      "Help me discover my podcast idea from scratch",
+      "Help me plan my episode production schedule",
+      "Help me prep for my next episode",
+      "I want to start a podcast but don't know where to begin",
     ];
   }
 
   switch (agent.id) {
     case "ida":
       return [
-        "Generate podcast ideas from themes for different timelines",
-        "Recommend which episode ideas to pursue based on ROI and follower growth",
-        "Create actionable episode plans from podcast themes",
-        "Help me brainstorm podcast ideas focused on my niche and brand",
+        "Help me discover my podcast idea from scratch",
+        "I want to start a podcast but don't know where to begin",
+        "Help me develop my podcast concept and brand voice",
+        "Guide me through creating my first episode ideas",
       ];
     case "astra":
       return [
-        "Research competitors for my podcast idea using Firecrawl",
-        "Validate if my podcast topic is unique and relevant",
-        "Find what content topics are trending in my niche",
-        "Compare my podcast idea against competitor content",
+        "Help me plan my episode production schedule",
+        "I need to schedule my episodes in Google Calendar",
+        "Create a production plan for my upcoming episodes",
+        "Help me optimize my podcast production workflow",
       ];
     case "ember":
       return [
-        "Organize my podcast episodes in Google Calendar",
-        "Create a production schedule with tasks for my next episode",
-        "Plan my episode calendar based on my availability",
-        "Set up episode tasks and deadlines in Google Calendar",
+        "Help me prep for my next episode",
+        "I need to find a guest for my episode",
+        "I have a recording ready for editing",
+        "Help me create show notes and marketing assets",
       ];
     default:
       return [
-        "Generate podcast ideas from themes for different timelines",
-        "Research competitors for my podcast idea using Firecrawl",
-        "Organize my podcast episodes in Google Calendar",
-        "Help me brainstorm podcast ideas focused on my niche and brand",
+        "Help me discover my podcast idea from scratch",
+        "Help me plan my episode production schedule",
+        "Help me prep for my next episode",
+        "I want to start a podcast but don't know where to begin",
       ];
   }
 };
