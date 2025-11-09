@@ -21,6 +21,7 @@ import { getAgentById } from '@/lib/ai/agents';
 import { entitlementsByUserType } from '@/lib/ai/entitlements';
 import type { ChatModel } from '@/lib/ai/models';
 import { type RequestHints, systemPrompt } from '@/lib/ai/prompts';
+import { google } from '@ai-sdk/google';
 import { myProvider } from '@/lib/ai/providers';
 import { createDocument } from '@/lib/ai/tools/create-document';
 import { firecrawlScrape } from '@/lib/ai/tools/firecrawl-scrape';
@@ -225,6 +226,7 @@ export async function POST(request: Request) {
                   'firecrawlMap',
                   'firecrawlSearch',
                   'firecrawlExtract',
+                  'code_execution',
                 ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
@@ -245,6 +247,7 @@ export async function POST(request: Request) {
             firecrawlMap: firecrawlMap(),
             firecrawlSearch: firecrawlSearch(),
             firecrawlExtract: firecrawlExtract(),
+            code_execution: google.tools.codeExecution({}),
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,

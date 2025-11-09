@@ -14,6 +14,7 @@ export const myProvider = isTestEnvironment
         reasoningModel,
         liteModel,
         titleModel,
+        imageModel,
       } = require("./models.mock");
       return customProvider({
         languageModels: {
@@ -22,6 +23,9 @@ export const myProvider = isTestEnvironment
           "chat-model-lite": liteModel,
           "title-model": titleModel,
           "artifact-model": artifactModel,
+        },
+        imageModels: {
+          "image-model": imageModel,
         },
       });
     })()
@@ -32,5 +36,8 @@ export const myProvider = isTestEnvironment
         "chat-model-lite": google("models/gemini-2.5-flash-lite"),
         "title-model": google("models/gemini-2.5-flash"),
         "artifact-model": google("models/gemini-2.5-pro"),
+      },
+      imageModels: {
+        "image-model": google.image("imagen-3.0-generate-002"),
       },
     });
