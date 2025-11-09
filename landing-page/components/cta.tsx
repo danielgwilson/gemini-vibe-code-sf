@@ -4,13 +4,13 @@ import { ArrowRight } from 'lucide-react';
 export function CTA() {
   return (
     <section className="py-20 px-4 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-chart-4/20 to-accent/20" />
+      <div className="absolute inset-0 bg-linear-to-br from-primary/20 via-chart-4/20 to-accent/20" />
       <div className="absolute inset-0 glass" />
 
       <div className="container mx-auto max-w-4xl text-center space-y-8 relative z-10">
         <h2 className="text-3xl md:text-5xl font-bold text-balance">
           Ready to launch your{' '}
-          <span className="bg-gradient-to-r from-primary via-chart-4 to-accent bg-clip-text text-transparent">
+          <span className="bg-linear-to-r from-primary via-chart-4 to-accent bg-clip-text text-transparent">
             podcast?
           </span>
         </h2>
@@ -21,7 +21,7 @@ export function CTA() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
           <Button
             size="lg"
-            className="text-base px-8 h-12 bg-gradient-to-r from-primary to-chart-4 hover:opacity-90 transition-opacity shadow-lg shadow-primary/25"
+            className="text-base px-8 h-12 bg-linear-to-r from-primary to-chart-4 hover:opacity-90 transition-opacity shadow-lg shadow-primary/25"
           >
             Start Your Podcast
             <ArrowRight className="w-5 h-5 ml-2" />
