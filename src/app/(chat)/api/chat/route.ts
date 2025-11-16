@@ -1,4 +1,3 @@
-import { google } from '@ai-sdk/google';
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -7,6 +6,7 @@ import {
   stepCountIs,
   streamText,
 } from 'ai';
+import { geolocation } from '@vercel/functions';
 import { unstable_cache as cache } from 'next/cache';
 import { after } from 'next/server';
 import {
@@ -171,11 +171,13 @@ export async function POST(request: Request) {
 
     const uiMessages = [...convertToUIMessages(messagesFromDb), message];
 
+    const { longitude, latitude, city, country } = geolocation(request);
+
     const requestHints: RequestHints = {
-      longitude: undefined,
-      latitude: undefined,
-      city: undefined,
-      country: undefined,
+      longitude,
+      latitude,
+      city,
+      country,
     };
 
     await saveMessages({
@@ -197,7 +199,9 @@ export async function POST(request: Request) {
     // Map agent ID to underlying model ID
     const agent = getAgentById(selectedChatModel);
     const actualModelId = agent ? agent.modelId : selectedChatModel;
-    const isReasoningModel = actualModelId === 'chat-model-reasoning';
+    // Only disable tools when the user explicitly selects the reasoning model ID,
+    // not when using an agent that happens to run on that model.
+    const isReasoningModel = selectedChatModel === 'chat-model-reasoning';
 
     let finalMergedUsage: AppUsage | undefined;
 
@@ -225,7 +229,6 @@ export async function POST(request: Request) {
                 'firecrawlMap',
                 'firecrawlSearch',
                 'firecrawlExtract',
-                'code_execution',
               ],
           experimental_transform: smoothStream({ chunking: 'word' }),
           tools: {
@@ -246,7 +249,6 @@ export async function POST(request: Request) {
             firecrawlMap,
             firecrawlSearch,
             firecrawlExtract,
-            code_execution: google.tools.codeExecution({}) as any,
           },
           experimental_telemetry: {
             isEnabled: isProductionEnvironment,

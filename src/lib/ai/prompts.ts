@@ -42,13 +42,27 @@ export type RequestHints = {
   country: string | undefined;
 };
 
-export const getRequestPromptFromHints = (requestHints: RequestHints) => `
+export const getRequestPromptFromHints = (requestHints: RequestHints) => {
+  const { latitude, longitude, city, country } = requestHints;
+
+  // If we have no location hints at all, omit this block entirely.
+  if (
+    latitude === undefined &&
+    longitude === undefined &&
+    city === undefined &&
+    country === undefined
+  ) {
+    return '';
+  }
+
+  return `
 About the origin of user's request:
-- lat: ${requestHints.latitude}
-- lon: ${requestHints.longitude}
-- city: ${requestHints.city}
-- country: ${requestHints.country}
+- lat: ${latitude ?? 'unknown'}
+- lon: ${longitude ?? 'unknown'}
+- city: ${city ?? 'unknown'}
+- country: ${country ?? 'unknown'}
 `;
+};
 
 export const systemPrompt = ({
   selectedChatModel,
