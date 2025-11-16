@@ -50,7 +50,11 @@ export const imageDocumentHandler = createDocumentHandler<'image'>({
 
     return imageBase64;
   },
-  onUpdateDocument: async ({ document, description, dataStream }) => {
+  onUpdateDocument: async ({
+    document: _document,
+    description,
+    dataStream,
+  }) => {
     // For updates, generate a new image based on the description
     const result = await generateImage({
       model: myProvider.imageModel('image-model'),

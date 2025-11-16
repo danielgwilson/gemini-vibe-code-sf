@@ -42,8 +42,8 @@ export default function PrivacyPage() {
                 Account information:
               </span>{' '}
               When you sign in with Google, we receive your basic profile
-              information (name, email address and profile image) so that we
-              can create and manage your Gemcast account.
+              information (name, email address and profile image) so that we can
+              create and manage your Gemcast account.
             </li>
             <li>
               <span className="font-medium text-foreground">
@@ -67,10 +67,10 @@ export default function PrivacyPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold">Google user data</h2>
           <p className="text-sm text-muted-foreground">
-            With your consent, Gemcast uses Google APIs to access certain
-            Google services on your behalf. We request the following scopes
-            through Google OAuth in order to provide the core functionality of
-            the Service:
+            With your consent, Gemcast uses Google APIs to access certain Google
+            services on your behalf. We request the following scopes through
+            Google OAuth in order to provide the core functionality of the
+            Service:
           </p>
           <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
             <li>
@@ -83,7 +83,9 @@ export default function PrivacyPage() {
               Gemcast to schedule meetings.
             </li>
             <li>
-              <code>https://www.googleapis.com/auth/meetings.space.created</code>{' '}
+              <code>
+                https://www.googleapis.com/auth/meetings.space.created
+              </code>{' '}
               – to create Google Meet spaces for meetings you schedule through
               the Service.
             </li>
@@ -220,4 +222,3 @@ export default function PrivacyPage() {
     </div>
   );
 }
-

@@ -25,6 +25,8 @@ import {
   type DBMessage,
   document,
   message,
+  type PodcastDocumentMetadata,
+  type PodcastDocumentStatus,
   type Suggestion,
   stream,
   suggestion,
@@ -309,12 +311,14 @@ export async function saveDocument({
   kind,
   content,
   userId,
+  metadata,
 }: {
   id: string;
   title: string;
   kind: ArtifactKind;
   content: string;
   userId: string;
+  metadata?: PodcastDocumentMetadata;
 }) {
   try {
     return await db
@@ -325,6 +329,10 @@ export async function saveDocument({
         kind,
         content,
         userId,
+        metadata:
+          metadata && Object.keys(metadata ?? {}).length > 0
+            ? metadata
+            : { status: 'active' },
         createdAt: new Date(),
       })
       .returning();
@@ -346,6 +354,53 @@ export async function getDocumentsById({ id }: { id: string }) {
     throw new ChatSDKError(
       'bad_request:database',
       'Failed to get documents by id',
+    );
+  }
+}
+
+export async function getDocumentsByUserId({ userId }: { userId: string }) {
+  try {
+    return await db
+      .select()
+      .from(document)
+      .where(eq(document.userId, userId))
+      .orderBy(asc(document.createdAt));
+  } catch (_error) {
+    throw new ChatSDKError(
+      'bad_request:database',
+      'Failed to get documents by user id',
+    );
+  }
+}
+
+export async function setDocumentStatus({
+  id,
+  status,
+}: {
+  id: string;
+  status: PodcastDocumentStatus;
+}) {
+  try {
+    const documents = await getDocumentsById({ id });
+    const [latest] = documents;
+
+    const baseMetadata: PodcastDocumentMetadata =
+      (latest?.metadata as PodcastDocumentMetadata) ?? {};
+
+    const nextMetadata: PodcastDocumentMetadata = {
+      ...(baseMetadata ?? {}),
+      status,
+    };
+
+    return await db
+      .update(document)
+      .set({ metadata: nextMetadata })
+      .where(eq(document.id, id))
+      .returning();
+  } catch (_error) {
+    throw new ChatSDKError(
+      'bad_request:database',
+      'Failed to update document status',
     );
   }
 }

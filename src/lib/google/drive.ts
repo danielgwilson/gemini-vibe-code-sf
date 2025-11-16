@@ -102,11 +102,14 @@ export async function getTranscriptForRecording(
 
     // Get the most recent matching transcript
     const transcriptFile = transcriptFiles[0];
+    if (!transcriptFile.id) {
+      throw new Error('Transcript file is missing an id.');
+    }
 
     // Export the Google Doc as plain text
     const exportedContent = await drive.files.export(
       {
-        fileId: transcriptFile.id!,
+        fileId: transcriptFile.id,
         mimeType: 'text/plain',
       },
       { responseType: 'text' },
@@ -211,15 +214,19 @@ export async function createGoogleDoc(
       fields: 'id, name, webViewLink',
     });
 
-    const fileId = createResponse.data.id;
-
     // For now, we'll create it empty. Content can be added via Google Docs API if needed.
     // The content parameter is kept for future implementation with Docs API.
 
+    const { id, name, webViewLink } = createResponse.data;
+
+    if (!id || !name || !webViewLink) {
+      throw new Error('Missing fields in Google Drive create response.');
+    }
+
     return {
-      id: createResponse.data.id!,
-      name: createResponse.data.name!,
-      webViewLink: createResponse.data.webViewLink!,
+      id,
+      name,
+      webViewLink,
     };
   } catch (error) {
     console.error('Error creating Google Doc:', error);

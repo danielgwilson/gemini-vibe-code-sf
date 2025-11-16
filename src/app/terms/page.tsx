@@ -137,11 +137,11 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-xl font-semibold">9. Disclaimers</h2>
           <p className="text-sm text-muted-foreground">
-            The Service is provided &quot;as is&quot; and &quot;as available&quot;
-            without warranties of any kind, whether express or implied. To the
-            maximum extent permitted by law, we disclaim all warranties,
-            including implied warranties of merchantability, fitness for a
-            particular purpose, and non-infringement.
+            The Service is provided &quot;as is&quot; and &quot;as
+            available&quot; without warranties of any kind, whether express or
+            implied. To the maximum extent permitted by law, we disclaim all
+            warranties, including implied warranties of merchantability, fitness
+            for a particular purpose, and non-infringement.
           </p>
         </section>
 
@@ -160,8 +160,8 @@ export default function TermsPage() {
           <p className="text-sm text-muted-foreground">
             We may update these Terms from time to time. When we do, we will
             update the &quot;Last updated&quot; date at the top of this page.
-            Your continued use of the Service after any changes become
-            effective constitutes your acceptance of the revised Terms.
+            Your continued use of the Service after any changes become effective
+            constitutes your acceptance of the revised Terms.
           </p>
         </section>
 
@@ -183,4 +183,3 @@ export default function TermsPage() {
     </div>
   );
 }
-

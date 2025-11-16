@@ -99,9 +99,9 @@ export function AgentCards() {
                   </p>
 
                   <ul className="space-y-3">
-                    {agent.features.map((feature, index) => (
+                    {agent.features.map((feature) => (
                       <li
-                        key={index}
+                        key={feature}
                         className="flex items-start gap-2 text-sm"
                       >
                         <div

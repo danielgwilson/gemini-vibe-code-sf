@@ -11,7 +11,7 @@ import {
 } from 'react';
 import useSWR from 'swr';
 import { useArtifact } from '@/hooks/use-artifact';
-import type { Document } from '@/lib/db/schema';
+import type { Document, PodcastDocumentMetadata } from '@/lib/db/schema';
 import { cn, fetcher } from '@/lib/utils';
 import type { ArtifactKind, UIArtifact } from './artifact';
 import { CodeEditor } from './code-editor';
@@ -24,7 +24,9 @@ import { Editor } from './text-editor';
 
 type DocumentPreviewProps = {
   isReadonly: boolean;
+  // biome-ignore lint/suspicious/noExplicitAny: Result and args shapes vary by tool kind
   result?: any;
+  // biome-ignore lint/suspicious/noExplicitAny: Result and args shapes vary by tool kind
   args?: any;
 };
 
@@ -81,7 +83,12 @@ export function DocumentPreview({
   }
 
   if (isDocumentsFetching) {
-    return <LoadingSkeleton artifactKind={result.kind ?? args.kind} />;
+    const artifactKindForSkeleton: ArtifactKind =
+      (result?.kind as ArtifactKind | undefined) ??
+      (args?.kind as ArtifactKind | undefined) ??
+      artifact.kind;
+
+    return <LoadingSkeleton artifactKind={artifactKindForSkeleton} />;
   }
 
   const document: Document | null = previewDocument
@@ -94,6 +101,7 @@ export function DocumentPreview({
           id: artifact.documentId,
           createdAt: new Date(),
           userId: 'noop',
+          metadata: null as PodcastDocumentMetadata,
         }
       : null;
 
@@ -149,6 +157,7 @@ const PureHitboxLayer = ({
   setArtifact,
 }: {
   hitboxRef: React.RefObject<HTMLDivElement | null>;
+  // biome-ignore lint/suspicious/noExplicitAny: Result shape varies by tool kind
   result: any;
   setArtifact: (
     updaterFn: UIArtifact | ((currentArtifact: UIArtifact) => UIArtifact),
@@ -163,9 +172,9 @@ const PureHitboxLayer = ({
           ? { ...artifact, isVisible: true }
           : {
               ...artifact,
-              title: result.title,
-              documentId: result.id,
-              kind: result.kind,
+              title: result?.title,
+              documentId: result?.id,
+              kind: result?.kind,
               isVisible: true,
               boundingBox: {
                 left: boundingBox.x,

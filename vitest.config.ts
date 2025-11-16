@@ -9,6 +9,9 @@ export default defineConfig({
   test: {
     env: { ...config({ path: '.env.test' }).parsed },
     environment: 'jsdom',
+    alias: {
+      'server-only': resolve(__dirname, 'src/tests/server-only-mock.ts'),
+    },
   },
   resolve: {
     alias: {

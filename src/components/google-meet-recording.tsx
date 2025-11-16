@@ -78,7 +78,7 @@ type GoogleMeetRecordingOutput =
 function formatFileSize(bytes?: string): string {
   if (!bytes) return 'Unknown size';
   const numBytes = parseInt(bytes, 10);
-  if (isNaN(numBytes)) return bytes;
+  if (Number.isNaN(numBytes)) return bytes;
 
   const units = ['B', 'KB', 'MB', 'GB'];
   let size = numBytes;
@@ -104,7 +104,7 @@ function formatDate(dateString?: string): string {
 export function GoogleMeetRecording({
   output,
 }: {
-  output: GoogleMeetRecordingOutput | any;
+  output: GoogleMeetRecordingOutput;
 }) {
   // Don't handle errors here - ToolOutput component handles them
   if (!output || output?.error || output?.success === false) {

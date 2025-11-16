@@ -33,13 +33,13 @@ export function SidebarUserNav({ user }: { user: User }) {
           <DropdownMenuTrigger asChild>
             {status === 'loading' ? (
               <SidebarMenuButton className="h-10 justify-between data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground">
-                <div className="flex flex-row gap-2">
+                <div className="flex flex-row items-center gap-2">
                   <div className="size-6 animate-pulse rounded-full bg-sidebar-accent-foreground/30" />
-                  <span className="animate-pulse rounded-md bg-sidebar-accent-foreground/30 text-transparent">
+                  <span className="animate-pulse rounded-md bg-sidebar-accent-foreground/30 text-transparent group-data-[collapsible=icon]:hidden">
                     Loading auth status
                   </span>
                 </div>
-                <div className="animate-spin text-sidebar-foreground/50">
+                <div className="animate-spin text-sidebar-foreground/50 group-data-[collapsible=icon]:hidden">
                   <LoaderIcon />
                 </div>
               </SidebarMenuButton>
@@ -55,10 +55,13 @@ export function SidebarUserNav({ user }: { user: User }) {
                   src={`https://avatar.vercel.sh/${user.email}`}
                   width={24}
                 />
-                <span className="truncate" data-testid="user-email">
+                <span
+                  className="truncate group-data-[collapsible=icon]:hidden"
+                  data-testid="user-email"
+                >
                   {user?.email}
                 </span>
-                <ChevronUp className="ml-auto" />
+                <ChevronUp className="ml-auto group-data-[collapsible=icon]:hidden" />
               </SidebarMenuButton>
             )}
           </DropdownMenuTrigger>

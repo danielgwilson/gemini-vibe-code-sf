@@ -1,3 +1,4 @@
+import { geolocation } from '@vercel/functions';
 import {
   convertToModelMessages,
   createUIMessageStream,
@@ -6,7 +7,6 @@ import {
   stepCountIs,
   streamText,
 } from 'ai';
-import { geolocation } from '@vercel/functions';
 import { unstable_cache as cache } from 'next/cache';
 import { after } from 'next/server';
 import {

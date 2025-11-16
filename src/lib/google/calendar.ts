@@ -47,7 +47,20 @@ export async function createCalendarEvent(
   },
 ) {
   try {
-    const eventData: any = {
+    const eventData: {
+      summary: string;
+      description: string;
+      start: { dateTime: string; timeZone: string };
+      end: { dateTime: string; timeZone: string };
+      location?: string;
+      attendees?: { email: string; displayName?: string }[];
+      conferenceData?: {
+        createRequest: {
+          requestId: string;
+          conferenceSolutionKey: { type: string };
+        };
+      };
+    } = {
       summary: event.summary,
       description: event.description || '',
       start: {
@@ -124,7 +137,8 @@ export async function createCalendarEvent(
       end: response.data.end?.dateTime,
       htmlLink: response.data.htmlLink,
       meetLink: response.data.conferenceData?.entryPoints?.find(
-        (ep: any) => ep.entryPointType === 'video',
+        (ep: { entryPointType?: string | null }) =>
+          ep.entryPointType === 'video',
       )?.uri,
     };
   } catch (error) {
@@ -132,9 +146,17 @@ export async function createCalendarEvent(
 
     // Extract detailed error information from Google API errors
     if (error && typeof error === 'object' && 'response' in error) {
-      const apiError = error as any;
+      type GoogleApiError = {
+        response?: {
+          status?: number;
+          statusText?: string;
+          data?: { error?: { message?: string } };
+        };
+        message?: string;
+      };
+
+      const apiError = error as GoogleApiError;
       const status = apiError.response?.status;
-      const statusText = apiError.response?.statusText;
       const errorData = apiError.response?.data;
 
       if (status === 401) {

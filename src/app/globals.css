@@ -141,13 +141,13 @@
     background-color: var(--background);
     color: var(--foreground);
   }
-  
+
   /* Ensure sidebar uses correct colors */
   [data-sidebar="sidebar"] {
     background-color: var(--sidebar);
     color: var(--sidebar-foreground);
   }
-  
+
   /* Ensure main content area uses background color */
   main {
     background-color: var(--background);
@@ -239,10 +239,10 @@
 
 /* Fix contrast for agent picker checkmark and text */
 [data-agent-selected="true"] {
-  color: var(--foreground) !important;
+  color: var(--foreground);
 }
 
 /* Target the checkmark icon in selected agent items */
 [data-agent-selected="true"] span[class*="absolute"][class*="left-2"] svg {
-  color: var(--agent-checkmark-color, var(--foreground)) !important;
+  color: var(--agent-checkmark-color, var(--foreground));
 }

@@ -11,7 +11,10 @@ export function Logo() {
           className="relative w-8 h-10"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          aria-hidden="true"
+          focusable="false"
         >
+          <title>Gemcast microphone logo</title>
           {/* Microphone capsule/head - gradient top to bottom */}
           <rect
             x="8"

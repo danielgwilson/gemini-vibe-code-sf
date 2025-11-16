@@ -260,6 +260,9 @@ importers:
       resumable-stream:
         specifier: ^2.2.8
         version: 2.2.8
+      shiki:
+        specifier: ^3.15.0
+        version: 3.15.0
       sonner:
         specifier: ^1.7.4
         version: 1.7.4(react-dom@19.2.0(react@19.2.0))(react@19.2.0)

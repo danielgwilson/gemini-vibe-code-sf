@@ -105,6 +105,25 @@ export const vote = pgTable(
 
 export type Vote = InferSelectModel<typeof vote>;
 
+export type PodcastDocumentStatus = 'active' | 'archived';
+
+export type PodcastDocumentType =
+  | 'podcast_brief'
+  | 'episode_plan'
+  | 'production_schedule'
+  | 'guest_dossier'
+  | 'episode_outline'
+  | 'post_production_pack';
+
+export type PodcastDocumentMetadata = {
+  status?: PodcastDocumentStatus;
+  type?: PodcastDocumentType;
+  chatId?: string;
+  agentId?: 'ida' | 'astra' | 'ember';
+  episodeSlug?: string;
+  [key: string]: unknown;
+} | null;
+
 export const document = pgTable(
   'Document',
   {
@@ -115,6 +134,7 @@ export const document = pgTable(
     kind: varchar('text', { enum: ['text', 'code', 'image', 'sheet'] })
       .notNull()
       .default('text'),
+    metadata: jsonb('metadata').$type<PodcastDocumentMetadata>().default(null),
     userId: uuid('userId')
       .notNull()
       .references(() => user.id),

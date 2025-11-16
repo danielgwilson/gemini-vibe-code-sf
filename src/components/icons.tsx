@@ -1,6 +1,7 @@
 export const BotIcon = () => {
   return (
     <svg
+      aria-hidden="true"
       height="16"
       strokeLinejoin="round"
       style={{ color: 'currentcolor' }}
@@ -20,6 +21,7 @@ export const BotIcon = () => {
 export const UserIcon = () => {
   return (
     <svg
+      aria-hidden="true"
       data-testid="geist-icon"
       height="16"
       strokeLinejoin="round"
@@ -40,6 +42,7 @@ export const UserIcon = () => {
 export const AttachmentIcon = () => {
   return (
     <svg
+      aria-hidden="true"
       height="16"
       strokeLinejoin="round"
       style={{ color: 'currentcolor' }}
@@ -59,6 +62,7 @@ export const AttachmentIcon = () => {
 export const VercelIcon = ({ size = 17 }) => {
   return (
     <svg
+      aria-hidden="true"
       height={size}
       strokeLinejoin="round"
       style={{ color: 'currentcolor' }}
@@ -249,6 +253,7 @@ export const LogoAnthropic = () => {
 export const RouteIcon = ({ size = 16 }: { size?: number }) => {
   return (
     <svg
+      aria-hidden="true"
       height={size}
       strokeLinejoin="round"
       style={{ color: 'currentcolor' }}
@@ -268,6 +273,7 @@ export const RouteIcon = ({ size = 16 }: { size?: number }) => {
 export const FileIcon = ({ size = 16 }: { size?: number }) => {
   return (
     <svg
+      aria-hidden="true"
       height={size}
       strokeLinejoin="round"
       style={{ color: 'currentcolor' }}
@@ -287,6 +293,7 @@ export const FileIcon = ({ size = 16 }: { size?: number }) => {
 export const LoaderIcon = ({ size = 16 }: { size?: number }) => {
   return (
     <svg
+      aria-hidden="true"
       height={size}
       strokeLinejoin="round"
       style={{ color: 'currentcolor' }}
@@ -358,6 +365,44 @@ export const LoaderIcon = ({ size = 16 }: { size?: number }) => {
     </svg>
   );
 };
+
+export const ArchiveIcon = ({ size = 16 }: { size?: number }) => {
+  return (
+    <svg
+      height={size}
+      strokeLinejoin="round"
+      style={{ color: 'currentcolor' }}
+      viewBox="0 0 16 16"
+      width={size}
+    >
+      <path
+        clipRule="evenodd"
+        d="M2 1.5C2 0.671573 2.67157 0 3.5 0H12.5C13.3284 0 14 0.671573 14 1.5V3C14 3.82843 13.3284 4.5 12.5 4.5H3.5C2.67157 4.5 2 3.82843 2 3V1.5ZM3.5 1.5H12.5V3H3.5V1.5ZM3 6C2.44772 6 2 6.44772 2 7V13.5C2 14.8807 3.11929 16 4.5 16H11.5C12.8807 16 14 14.8807 14 13.5V7C14 6.44772 13.5523 6 13 6H3ZM6 8.25C5.58579 8.25 5.25 8.58579 5.25 9C5.25 9.41421 5.58579 9.75 6 9.75H10C10.4142 9.75 10.75 9.41421 10.75 9C10.75 8.58579 10.4142 8.25 10 8.25H6Z"
+        fill="currentColor"
+        fillRule="evenodd"
+      />
+    </svg>
+  );
+};
+
+export const RefreshCcwIcon = ({ size = 16 }: { size?: number }) => {
+  return (
+    <svg
+      height={size}
+      strokeLinejoin="round"
+      style={{ color: 'currentcolor' }}
+      viewBox="0 0 16 16"
+      width={size}
+    >
+      <path
+        clipRule="evenodd"
+        d="M7.99978 2.00001C6.75058 2.00001 5.5653 2.49464 4.68286 3.37708C3.80042 4.25952 3.30579 5.4448 3.30579 6.694C3.30579 7.9432 3.80042 9.12848 4.68286 10.0109C5.5653 10.8934 6.75058 11.388 7.99978 11.388C9.24911 11.388 10.4345 10.8933 11.3169 10.0108C11.5219 9.80588 11.8554 9.8058 12.0603 10.0108C12.2652 10.2158 12.2651 10.5493 12.0601 10.7541C10.9665 11.848 9.5184 12.4465 7.99978 12.4465C6.48104 12.4465 5.03281 11.8481 3.93911 10.7544C2.8454 9.66066 2.24707 8.21243 2.24707 6.69369C2.24707 5.17495 2.84552 3.72671 3.93924 2.633C5.03295 1.5393 6.48119 0.940857 7.99993 0.940857C9.18502 0.940857 10.3202 1.30184 11.2453 1.96421L11.2454 1.96426L12.0183 2.51224V1.75C12.0183 1.47386 12.2421 1.25 12.5183 1.25C12.7944 1.25 13.0183 1.47386 13.0183 1.75V3.75C13.0183 3.95588 12.902 4.14755 12.7165 4.23913C12.531 4.33071 12.311 4.30654 12.1501 4.17787L10.6501 2.97787C9.97748 2.46343 9.18636 2.16886 8.37291 2.11626C8.24911 2.10796 8.1247 2.10381 7.99978 2.10381V2.00001Z"
+        fill="currentColor"
+        fillRule="evenodd"
+      />
+    </svg>
+  );
+}
 
 export const UploadIcon = ({ size = 16 }: { size?: number }) => {
   return (

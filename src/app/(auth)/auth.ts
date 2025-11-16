@@ -16,7 +16,6 @@ if (!process.env.NEXTAUTH_SECRET) {
 
 export type UserType = 'regular';
 
-// biome-ignore lint/nursery/useConsistentTypeDefinitions: "Required"
 declare module 'next-auth' {
   interface Session extends DefaultSession {
     user: {
@@ -112,8 +111,8 @@ export const authOptions: NextAuthOptions = {
                   'Content-Type': 'application/x-www-form-urlencoded',
                 },
                 body: new URLSearchParams({
-                  client_id: process.env.GOOGLE_CLIENT_ID!,
-                  client_secret: process.env.GOOGLE_CLIENT_SECRET!,
+                  client_id: process.env.GOOGLE_CLIENT_ID as string,
+                  client_secret: process.env.GOOGLE_CLIENT_SECRET as string,
                   refresh_token: token.refreshToken,
                   grant_type: 'refresh_token',
                 }),
@@ -136,7 +135,7 @@ export const authOptions: NextAuthOptions = {
         }
       }
 
-      if (user && user.email) {
+      if (user?.email) {
         // Fetch user ID from database
         const users = await getUser(user.email);
         if (users.length > 0) {

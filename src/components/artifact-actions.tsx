@@ -12,7 +12,9 @@ type ArtifactActionsProps = {
   currentVersionIndex: number;
   isCurrentVersion: boolean;
   mode: 'edit' | 'diff';
+  // biome-ignore lint/suspicious/noExplicitAny: Metadata shape depends on artifact kind
   metadata: any;
+  // biome-ignore lint/suspicious/noExplicitAny: Metadata shape depends on artifact kind
   setMetadata: Dispatch<SetStateAction<any>>;
 };
 
