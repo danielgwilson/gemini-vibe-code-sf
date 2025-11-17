@@ -102,10 +102,12 @@ export default async function WorkspacePage() {
         </div>
 
         <div className="grid gap-4 md:grid-cols-3">
-          <Card className="col-span-1 md:col-span-2 border-border/60 bg-background/90 shadow-sm pt-0 gap-0">
+          <Card className="col-span-1 md:col-span-2 border-border/60 bg-background/90 pt-0 gap-0 shadow-none">
             <div className="flex items-center justify-between border-b px-5 py-2.5 md:py-3">
               <div className="flex min-w-0 flex-1 items-center gap-2">
-                <h2 className="text-sm font-semibold whitespace-nowrap">Recent chats</h2>
+                <h2 className="text-sm font-semibold whitespace-nowrap">
+                  Recent chats
+                </h2>
                 <span className="text-xs text-muted-foreground truncate">
                   Jump back into your latest conversations.
                 </span>
@@ -140,7 +142,7 @@ export default async function WorkspacePage() {
                           {formatDistance(
                             new Date(chatItem.createdAt),
                             new Date(),
-                            { addSuffix: true },
+                            { addSuffix: true }
                           )}
                         </span>
                       </Link>
@@ -151,10 +153,12 @@ export default async function WorkspacePage() {
             </div>
           </Card>
 
-          <Card className="border-border/60 bg-background/90 shadow-sm pt-0 gap-0">
+          <Card className="border-border/60 bg-background/90 pt-0 gap-0 shadow-none">
             <div className="flex items-center justify-between border-b px-4 py-2.5 md:py-3">
               <div className="flex min-w-0 flex-1 items-center gap-2">
-                <h2 className="text-sm font-semibold whitespace-nowrap">Recent documents</h2>
+                <h2 className="text-sm font-semibold whitespace-nowrap">
+                  Recent documents
+                </h2>
                 <span className="text-xs text-muted-foreground truncate">
                   Quick access to your latest briefs, plans, and dossiers.
                 </span>
@@ -197,7 +201,7 @@ export default async function WorkspacePage() {
                               {formatDistance(
                                 new Date(doc.createdAt),
                                 new Date(),
-                                { addSuffix: true },
+                                { addSuffix: true }
                               )}
                             </span>
                           </div>

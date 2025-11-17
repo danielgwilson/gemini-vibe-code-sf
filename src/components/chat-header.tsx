@@ -28,7 +28,7 @@ function PureChatHeader({
 
   return (
     <header
-      className="sticky top-0 z-10 flex items-center gap-2 backdrop-blur-xl bg-background/60 border-b border-border/50 px-2 py-1.5 md:px-2 shadow-sm"
+      className="sticky top-0 z-10 flex items-center gap-2 backdrop-blur-xl bg-background/60 border-b border-border/50 px-2.5 py-1.5 md:px-2.5"
       style={
         agent
           ? {
@@ -56,7 +56,7 @@ function PureChatHeader({
           >
             {agent.icon}
           </div>
-          <div className="flex min-w-0 flex-1 items-center gap-2">
+          <div className="flex min-w-0 flex-col items-left">
             <span className="text-xs font-semibold whitespace-nowrap">
               {agent.name}
             </span>
