@@ -133,11 +133,11 @@
     @apply border-border outline-ring/50;
   }
   html {
-    @apply overflow-x-hidden;
+    @apply overflow-x-hidden h-dvh;
     background-color: var(--background);
   }
   body {
-    @apply text-foreground overflow-x-hidden;
+    @apply text-foreground overflow-x-hidden h-full overflow-hidden;
     background-color: var(--background);
     color: var(--foreground);
   }

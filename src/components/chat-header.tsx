@@ -56,11 +56,11 @@ function PureChatHeader({
           >
             {agent.icon}
           </div>
-          <div className="flex flex-col">
-            <span className="text-xs font-semibold leading-tight">
+          <div className="flex min-w-0 flex-1 items-center gap-2">
+            <span className="text-xs font-semibold whitespace-nowrap">
               {agent.name}
             </span>
-            <span className="text-[10px] text-muted-foreground leading-tight">
+            <span className="text-[10px] text-muted-foreground truncate">
               {agent.description}
             </span>
           </div>

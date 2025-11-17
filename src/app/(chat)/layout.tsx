@@ -28,7 +28,7 @@ export default async function Layout({
       <DataStreamProvider>
         <SidebarProvider defaultOpen={!isCollapsed}>
           <AppSidebar user={session?.user} />
-          <SidebarInset className="flex h-full overflow-hidden">{children}</SidebarInset>
+          <SidebarInset className="min-h-0 overflow-hidden">{children}</SidebarInset>
         </SidebarProvider>
       </DataStreamProvider>
     </>
