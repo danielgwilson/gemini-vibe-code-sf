@@ -10,7 +10,7 @@ import {
   RedoIcon,
   UndoIcon,
 } from '@/components/icons';
-import { Editor } from '@/components/text-editor';
+import { Response } from '@/components/elements/response';
 import type { Suggestion } from '@/lib/db/schema';
 import { getSuggestions } from '../actions';
 
@@ -77,18 +77,11 @@ export const textArtifact = new Artifact<'text', TextArtifactMetadata>({
 
     return (
       <div className="flex flex-row px-4 py-8 md:p-20">
-        <Editor
-          content={content}
-          currentVersionIndex={currentVersionIndex}
-          isCurrentVersion={isCurrentVersion}
-          onSaveContent={onSaveContent}
-          status={status}
-          suggestions={metadata ? metadata.suggestions : []}
-        />
-
-        {metadata?.suggestions && metadata.suggestions.length > 0 ? (
-          <div className="h-dvh w-12 shrink-0 md:hidden" />
-        ) : null}
+        <div className="flex-1">
+          <Response className="prose prose-sm max-w-none dark:prose-invert">
+            {content}
+          </Response>
+        </div>
       </div>
     );
   },

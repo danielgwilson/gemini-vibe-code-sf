@@ -1,9 +1,9 @@
 'use client';
 
 import { formatDistance } from 'date-fns';
-import { Archive, ExternalLink } from 'lucide-react';
+import { Archive, ExternalLink, RefreshCw } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import useSWR from 'swr';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -16,7 +16,6 @@ import type {
   PodcastDocumentStatus,
 } from '@/lib/db/schema';
 import { cn, fetcher } from '@/lib/utils';
-import { RefreshCcwIcon } from './icons';
 
 type DocumentWithEffectiveMetadata = Document & {
   metadata: PodcastDocumentMetadata & { status: PodcastDocumentStatus };
@@ -34,6 +33,8 @@ export function DocumentsView({ initialDocuments }: DocumentsViewProps) {
     useState<PodcastDocumentStatus>('active');
   const [query, setQuery] = useState('');
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const [isRefreshing, setIsRefreshing] = useState(false);
+  const refreshStartTime = useRef<number | null>(null);
 
   const { data, isLoading, mutate } = useSWR<{
     documents: DocumentWithEffectiveMetadata[];
@@ -47,6 +48,27 @@ export function DocumentsView({ initialDocuments }: DocumentsViewProps) {
   );
 
   const documents = useMemo(() => data?.documents ?? [], [data?.documents]);
+
+  const handleRefresh = useCallback(() => {
+    refreshStartTime.current = Date.now();
+    setIsRefreshing(true);
+    mutate();
+  }, [mutate]);
+
+  // Ensure it spins for at least 500ms, then stop when loading completes
+  useEffect(() => {
+    if (!isLoading && isRefreshing && refreshStartTime.current) {
+      const elapsed = Date.now() - refreshStartTime.current;
+      const remaining = Math.max(0, 500 - elapsed);
+      
+      const timeout = setTimeout(() => {
+        setIsRefreshing(false);
+        refreshStartTime.current = null;
+      }, remaining);
+      
+      return () => clearTimeout(timeout);
+    }
+  }, [isLoading, isRefreshing]);
 
   const onArchiveToggle = useCallback(
     async (id: string, nextStatus: PodcastDocumentStatus) => {
@@ -118,10 +140,13 @@ export function DocumentsView({ initialDocuments }: DocumentsViewProps) {
               variant="outline"
               size="icon"
               className="h-9 w-9"
-              onClick={() => mutate()}
+              onClick={handleRefresh}
             >
               <span className="sr-only">Refresh</span>
-              <RefreshCcwIcon size={16} />
+              <RefreshCw 
+                className={cn('h-4 w-4', (isLoading || isRefreshing) && 'animate-spin')}
+                style={(isLoading || isRefreshing) ? { animation: 'spin 1s linear infinite' } : undefined}
+              />
             </Button>
           </div>
         </div>

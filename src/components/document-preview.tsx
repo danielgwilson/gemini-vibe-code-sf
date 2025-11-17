@@ -15,6 +15,7 @@ import type { Document, PodcastDocumentMetadata } from '@/lib/db/schema';
 import { cn, fetcher } from '@/lib/utils';
 import type { ArtifactKind, UIArtifact } from './artifact';
 import { CodeEditor } from './code-editor';
+import { Response } from './elements/response';
 import { DocumentToolCall, DocumentToolResult } from './document';
 import { InlineDocumentSkeleton } from './document-skeleton';
 import { FileIcon, FullscreenIcon, ImageIcon, LoaderIcon } from './icons';
@@ -276,7 +277,9 @@ const DocumentContent = ({ document }: { document: Document }) => {
   return (
     <div className={containerClassName}>
       {document.kind === 'text' ? (
-        <Editor {...commonProps} onSaveContent={handleSaveContent} />
+        <Response className="prose prose-sm max-w-none dark:prose-invert">
+          {document.content ?? ''}
+        </Response>
       ) : document.kind === 'code' ? (
         <div className="relative flex w-full flex-1">
           <div className="absolute inset-0">

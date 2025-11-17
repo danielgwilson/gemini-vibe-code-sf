@@ -93,7 +93,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                size="sm"
+                size="default"
                 tooltip="New chat"
                 onClick={() => {
                   setOpenMobile(false);
@@ -111,7 +111,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                size="sm"
+                size="default"
                 tooltip="Workspace"
                 isActive={isWorkspaceRoute}
                 onClick={() => {
@@ -130,7 +130,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
             <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                size="sm"
+                size="default"
                 tooltip="Documents"
                 isActive={isDocumentsRoute}
                 onClick={() => {

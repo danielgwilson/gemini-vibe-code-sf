@@ -51,13 +51,32 @@ export async function POST(request: Request) {
     const fileBuffer = await file.arrayBuffer();
 
     try {
+      // Primary path: upload to Vercel Blob (production-ready behavior)
       const data = await put(`${filename}`, fileBuffer, {
         access: 'public',
       });
 
       return NextResponse.json(data);
-    } catch (_error) {
-      return NextResponse.json({ error: 'Upload failed' }, { status: 500 });
+    } catch (error) {
+      console.error(
+        'Blob upload failed, falling back to inline data URL:',
+        error,
+      );
+
+      // Local-dev-friendly fallback: inline data URL so uploads still work
+      const buffer = Buffer.from(fileBuffer);
+      const base64 = buffer.toString('base64');
+      const contentType = file.type || 'application/octet-stream';
+      const dataUrl = `data:${contentType};base64,${base64}`;
+
+      return NextResponse.json(
+        {
+          url: dataUrl,
+          pathname: filename,
+          contentType,
+        },
+        { status: 200 },
+      );
     }
   } catch (_error) {
     return NextResponse.json(

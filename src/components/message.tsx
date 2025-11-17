@@ -1,5 +1,6 @@
 'use client';
 import type { UseChatHelpers } from '@ai-sdk/react';
+import type { ToolUIPart } from 'ai';
 import equal from 'fast-deep-equal';
 import { motion } from 'framer-motion';
 import { memo, useState } from 'react';
@@ -19,7 +20,6 @@ import {
   ToolInput,
   ToolOutput,
 } from './elements/tool';
-import type { ToolUIPart } from 'ai';
 import { GoogleMeetRecording } from './google-meet-recording';
 import { SparklesIcon } from './icons';
 import { MessageActions } from './message-actions';
@@ -335,7 +335,7 @@ const PurePreviewMessage = ({
               const { toolCallId, state } = part;
 
               return (
-                <Tool defaultOpen={true} key={toolCallId}>
+                <Tool defaultOpen={false} key={toolCallId}>
                   <ToolHeader state={state} type={type} />
                   <ToolContent>
                     {state === 'input-available' && (
