@@ -272,84 +272,20 @@ function PureArtifact({
         >
           {!isMobile && (
             <motion.div
-              animate={{ width: windowWidth, right: 0 }}
+              animate={{ 
+                width: '50vw',
+                right: 0,
+              }}
               className="fixed h-dvh bg-background"
               exit={{
-                width: isSidebarOpen ? windowWidth - 256 : windowWidth,
+                width: '50vw',
                 right: 0,
               }}
               initial={{
-                width: isSidebarOpen ? windowWidth - 256 : windowWidth,
+                width: '50vw',
                 right: 0,
               }}
             />
-          )}
-
-          {!isMobile && (
-            <motion.div
-              animate={{
-                opacity: 1,
-                x: 0,
-                scale: 1,
-                transition: {
-                  delay: 0.1,
-                  type: 'spring',
-                  stiffness: 300,
-                  damping: 30,
-                },
-              }}
-              className="relative h-dvh w-[400px] shrink-0 bg-muted dark:bg-background"
-              exit={{
-                opacity: 0,
-                x: 0,
-                scale: 1,
-                transition: { duration: 0 },
-              }}
-              initial={{ opacity: 0, x: 10, scale: 1 }}
-            >
-              <AnimatePresence>
-                {!isCurrentVersion && (
-                  <motion.div
-                    animate={{ opacity: 1 }}
-                    className="absolute top-0 left-0 z-50 h-dvh w-[400px] bg-background/50 dark:bg-background/70"
-                    exit={{ opacity: 0 }}
-                    initial={{ opacity: 0 }}
-                  />
-                )}
-              </AnimatePresence>
-
-              <div className="flex h-full flex-col items-center justify-between">
-                <ArtifactMessages
-                  artifactStatus={artifact.status}
-                  chatId={chatId}
-                  isReadonly={isReadonly}
-                  messages={messages}
-                  regenerate={regenerate}
-                  selectedModelId={selectedModelId}
-                  setMessages={setMessages}
-                  status={status}
-                  votes={votes}
-                />
-
-                <div className="relative flex w-full flex-row items-end gap-2 px-4 pb-4">
-                  <MultimodalInput
-                    attachments={attachments}
-                    chatId={chatId}
-                    className="bg-background dark:bg-muted"
-                    input={input}
-                    messages={messages}
-                    selectedModelId={selectedModelId}
-                    selectedVisibilityType={selectedVisibilityType}
-                    sendMessage={sendMessage}
-                    setAttachments={setAttachments}
-                    setInput={setInput}
-                    setMessages={setMessages}
-                    status={status}
-                    stop={stop}
-                  />
-                </div>
-              </div>
-            </motion.div>
           )}
 
           <motion.div
@@ -372,12 +308,11 @@ function PureArtifact({
                   }
                 : {
                     opacity: 1,
-                    x: 400,
+                    x: 0,
                     y: 0,
                     height: windowHeight,
-                    width: windowWidth
-                      ? windowWidth - 400
-                      : 'calc(100dvw-400px)',
+                    width: '50vw',
+                    right: 0,
                     borderRadius: 0,
                     transition: {
                       delay: 0,
@@ -416,6 +351,7 @@ function PureArtifact({
                     height: artifact.boundingBox.height,
                     width: artifact.boundingBox.width,
                     borderRadius: 50,
+                    right: undefined,
                   }
             }
           >

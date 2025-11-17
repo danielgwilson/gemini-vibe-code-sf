@@ -37,43 +37,8 @@ type RecordingDetails = {
   webContentLink?: string;
 };
 
-type GoogleMeetRecordingOutput =
-  | {
-      success: true;
-      action: 'list';
-      folderName?: string | null;
-      folderId?: string | null;
-      recordings: Recording[];
-      count: number;
-      error?: never;
-    }
-  | {
-      success: true;
-      action: 'get_transcript';
-      recordingId: string;
-      transcriptId?: string | null;
-      transcriptName?: string | null;
-      transcript: string;
-      transcriptLength: number;
-      error?: never;
-    }
-  | {
-      success: true;
-      action: 'get_details';
-      recording: RecordingDetails;
-      error?: never;
-    }
-  | {
-      success?: false;
-      error: string;
-      action?: string;
-    }
-  | {
-      success?: boolean;
-      action?: string;
-      error?: string;
-      [key: string]: unknown;
-    };
+// biome-ignore lint/suspicious/noExplicitAny: Output shape comes from tool runtime, not statically enforced
+type GoogleMeetRecordingOutput = any;
 
 function formatFileSize(bytes?: string): string {
   if (!bytes) return 'Unknown size';

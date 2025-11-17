@@ -23,6 +23,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '@/components/ui/sidebar';
+import { Logo } from './landing/logo';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -74,7 +75,7 @@ export function AppSidebar({ user }: { user: User | undefined }) {
               <SidebarMenuButton asChild size="lg">
                 <Link href="/chat" onClick={() => setOpenMobile(false)}>
                   <span className="inline-flex h-7 w-7 items-center justify-center rounded-full bg-primary text-xs font-bold text-primary-foreground">
-                    GV
+                    G
                   </span>
                   <span className="flex flex-col leading-tight group-data-[collapsible=icon]:hidden">
                     <span>Gemcast</span>
